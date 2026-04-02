@@ -1,5 +1,4 @@
 from pokerkit import State
-from logger import Logger
 
 class Bucketer:
     def __init__(self) -> None:
