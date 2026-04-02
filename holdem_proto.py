@@ -232,6 +232,8 @@ def bucket_play_one_sided_heads_up_hand() -> State:
                             action_name = "check/call"
                         case 2:
                             amount = int(input("Input raise size: "))
+                            if amount >= state.stacks[state.actor_index]:
+                                amount = max(state.stacks)
                             state.complete_bet_or_raise_to(amount)
                             action_name = "raise"
                     break

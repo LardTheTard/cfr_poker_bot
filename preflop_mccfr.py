@@ -81,6 +81,7 @@ def mccfr(cards, state: State, traverser):
                     else:
                         amount = next_state.pots[-1] * 1/2 #Raises half pot by default
                     next_state.complete_bet_or_raise_to(amount)
+                    next_state.push
             vals[action] = mccfr(cards, next_state, traverser)
 
         v    = sum(strat[a] * vals[a] for a in actions)
