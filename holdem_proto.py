@@ -197,6 +197,9 @@ def bucket_play_one_sided_heads_up_hand() -> State:
         mode=Mode.CASH_GAME,
     )
 
+    print(tuple(state.pot_amounts))
+    print("boom")
+
     bucketer = Bucketer()
     pf_history = []
     flop_history = []
@@ -233,7 +236,7 @@ def bucket_play_one_sided_heads_up_hand() -> State:
                         case 2:
                             amount = int(input("Input raise size: "))
                             if amount >= state.stacks[state.actor_index]:
-                                amount = max(state.stacks)
+                                amount = state.stacks[state.actor_index]
                             state.complete_bet_or_raise_to(amount)
                             action_name = "raise"
                     break

@@ -17,6 +17,10 @@ def payoff_p0(state: State):
     while state.actor_index is not None: #Stop simulating after pre-flop so just check thru
         state.check_or_call()
 
+    logger.log('')
+    logger.log('terminal')
+    logger.log(state.board_cards)
+
     if state.folded_status:
         return state.stacks[0] - state.starting_stacks[0]
     p0_holes = ''.join(repr(c) for c in state.hole_cards[0] if c is not None)
@@ -65,11 +69,17 @@ def mccfr(state: State, traverser: int, pf_history: list[str]):
     """     
     """
 
+    logger.log('')
+    logger.log(pf_history)
+    logger.log(state.bets)
+    logger.log(state.board_cards)
+
     if is_terminal(state):
         payoff = payoff_p0(state)
         return payoff if traverser == 0 else -payoff
 
     bucket = bucketer.preflop_bucket(state, pf_history)
+    logger.log(bucket)
 
     cur_actor       = state.actor_index
     actions = ['fold', 'check/call', 'raise'] # IMPLEMENT DIFFERENT RAISE SIZES: 'min_click', 'raise_medium', 'raise_big'
@@ -108,8 +118,8 @@ def mccfr(state: State, traverser: int, pf_history: list[str]):
                         next_state.complete_bet_or_raise_to(amount)
                         next_pf_history.append('raise')
                     else:
-                        cant_raise = True 
-            utils[action] = mccfr(next_state, traverser, next_pf_history) if not cant_raise else 0
+                        cant_raise = True
+            utils[action] = mccfr(next_state, traverser, next_pf_history) if not cant_raise else -100_000
 
         node_util = sum(strat[action] * utils[action] for action in actions)
 
@@ -154,6 +164,7 @@ def train(iters=100_000):
     """Two traversals per iteration (alternate which player is traverser)."""
     p0_total = 0.0
     for _ in tqdm(range(iters)):
+        logger.log("BOOM")
         v0_state = create_state()
         v1_state = deepcopy(v0_state)
         v0 = play_hand(v0_state, traverser=0)
@@ -199,13 +210,9 @@ if __name__ == '__main__':
     logger.clear_logs() # clears logs so new hand can be logged
 
     random.seed(42) 
-    train(200_000)
-    
+    train(100_000)
+
     for key, value in nodes.items():
         logger.log(key)
-        sum = 0
-        for k, v in value.strategy_sum.items():
-            sum += v
-        for k, v in value.strategy_sum.items():
-            logger.log(f"{k}: {v/sum}")
+        logger.log(value.strategy_sum)
         logger.log('--------------------------------')

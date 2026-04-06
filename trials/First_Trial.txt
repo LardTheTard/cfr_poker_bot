@@ -1,0 +1,432 @@
+('trash_offsuit_hands', 'BB', 'deep', 'root', 'min_open')
+defaultdict(<class 'float'>, {})
+--------------------------------
+('trash_offsuit_hands', 'SB', 'deep', 'open', 'min_open')
+defaultdict(<class 'float'>, {'fold': 5587.3847345557, 'check/call': 14846.9263843724, 'raise': 5446.688881071921})
+--------------------------------
+('trash_offsuit_hands', 'BB', 'deep', 'vs_3bet', 'min_open')
+defaultdict(<class 'float'>, {})
+--------------------------------
+('suited_connectors', 'BB', 'deep', 'root', 'min_open')
+defaultdict(<class 'float'>, {})
+--------------------------------
+('trash_offsuit_hands', 'SB', 'deep', 'limped', 'limp')
+defaultdict(<class 'float'>, {'fold': 0.3333333333333333, 'check/call': 0.3333333333333333, 'raise': 25759.333333333332})
+--------------------------------
+('trash_offsuit_hands', 'BB', 'deep', 'vs_open', 'min_open')
+defaultdict(<class 'float'>, {})
+--------------------------------
+('small_pairs', 'BB', 'deep', 'root', 'min_open')
+defaultdict(<class 'float'>, {})
+--------------------------------
+('small_pairs', 'BB', 'deep', 'vs_open', 'min_open')
+defaultdict(<class 'float'>, {})
+--------------------------------
+('trash_offsuit_hands', 'SB', 'deep', 'vs_4bet', '2.5x_open')
+defaultdict(<class 'float'>, {'fold': 1936.6574655573452, 'check/call': 5181.977224642029, 'raise': 1407.3653098005957})
+--------------------------------
+('trash_offsuit_hands', 'BB', 'short', 'vs_4bet', 'jam')
+defaultdict(<class 'float'>, {})
+--------------------------------
+('trash_offsuit_hands', 'SB', 'short', 'vs_4bet', 'large_open')
+defaultdict(<class 'float'>, {'fold': 147.3518030932362, 'check/call': 2755.31486357343, 'raise': 0.3333333333333333})
+--------------------------------
+('premium_offsuit_broadways', 'SB', 'deep', 'limped', 'limp')
+defaultdict(<class 'float'>, {'fold': 0.3333333333333333, 'check/call': 1.3333333333333333, 'raise': 303.3333333333333})
+--------------------------------
+('suited_connectors', 'SB', 'deep', 'open', 'min_open')
+defaultdict(<class 'float'>, {'fold': 368.4248113510969, 'check/call': 377.5124295077182, 'raise': 14.06275914118469})
+--------------------------------
+('weak_suited_aces', 'BB', 'deep', 'root', 'min_open')
+defaultdict(<class 'float'>, {})
+--------------------------------
+('weak_suited_aces', 'BB', 'deep', 'vs_open', 'min_open')
+defaultdict(<class 'float'>, {})
+--------------------------------
+('trash_offsuit_hands', 'SB', 'deep', 'vs_3bet', 'min_open')
+defaultdict(<class 'float'>, {'fold': 0.3333333333333333, 'check/call': 1.715151515151515, 'raise': 8501.951515151515})
+--------------------------------
+('trash_offsuit_hands', 'BB', 'deep', 'vs_4bet', '2.5x_open')
+defaultdict(<class 'float'>, {})
+--------------------------------
+('small_pairs', 'BB', 'deep', 'vs_3bet', 'min_open')
+defaultdict(<class 'float'>, {})
+--------------------------------
+('premium_offsuit_aces', 'BB', 'deep', 'root', 'min_open')
+defaultdict(<class 'float'>, {})
+--------------------------------
+('premium_offsuit_aces', 'BB', 'deep', 'vs_open', 'min_open')
+defaultdict(<class 'float'>, {})
+--------------------------------
+('premium_offsuit_aces', 'BB', 'deep', 'vs_4bet', '2.5x_open')
+defaultdict(<class 'float'>, {})
+--------------------------------
+('small_pairs', 'SB', 'deep', 'open', 'min_open')
+defaultdict(<class 'float'>, {'fold': 455.17274930249135, 'check/call': 468.62130350820274, 'raise': 12.205947189305226})
+--------------------------------
+('suited_connectors', 'BB', 'deep', 'vs_3bet', 'min_open')
+defaultdict(<class 'float'>, {})
+--------------------------------
+('premium_suited_broadways', 'SB', 'deep', 'open', 'min_open')
+defaultdict(<class 'float'>, {'fold': 299.75902891074685, 'check/call': 305.684032103052, 'raise': 25.55693898620121})
+--------------------------------
+('weak_offsuit_broadways', 'BB', 'deep', 'root', 'min_open')
+defaultdict(<class 'float'>, {})
+--------------------------------
+('weak_offsuit_broadways', 'BB', 'deep', 'vs_open', 'min_open')
+defaultdict(<class 'float'>, {})
+--------------------------------
+('weak_offsuit_broadways', 'BB', 'deep', 'vs_3bet', 'min_open')
+defaultdict(<class 'float'>, {})
+--------------------------------
+('premium_suited_aces', 'BB', 'deep', 'root', 'min_open')
+defaultdict(<class 'float'>, {})
+--------------------------------
+('premium_suited_aces', 'BB', 'deep', 'vs_open', 'min_open')
+defaultdict(<class 'float'>, {})
+--------------------------------
+('weak_suited_aces', 'SB', 'deep', 'limped', 'limp')
+defaultdict(<class 'float'>, {'fold': 0.3333333333333333, 'check/call': 1.4583333333333333, 'raise': 798.2083333333333})
+--------------------------------
+('suited_gappers', 'SB', 'deep', 'open', 'min_open')
+defaultdict(<class 'float'>, {'fold': 360.2787641696516, 'check/call': 385.8458888921168, 'raise': 17.87534693823174})
+--------------------------------
+('premium_offsuit_aces', 'SB', 'deep', 'limped', 'limp')
+defaultdict(<class 'float'>, {'fold': 0.3333333333333333, 'check/call': 1.8333333333333333, 'raise': 594.8333333333333})
+--------------------------------
+('premium_offsuit_aces', 'SB', 'deep', 'open', 'min_open')
+defaultdict(<class 'float'>, {'fold': 282.67762439215795, 'check/call': 289.0179557982852, 'raise': 27.304419809557043})
+--------------------------------
+('premium_offsuit_broadways', 'BB', 'deep', 'root', 'min_open')
+defaultdict(<class 'float'>, {})
+--------------------------------
+('premium_offsuit_broadways', 'BB', 'deep', 'vs_open', 'min_open')
+defaultdict(<class 'float'>, {})
+--------------------------------
+('small_pairs', 'SB', 'deep', 'limped', 'limp')
+defaultdict(<class 'float'>, {'fold': 0.3333333333333333, 'check/call': 2.3459915611814344, 'raise': 950.3206751054852})
+--------------------------------
+('small_pairs', 'SB', 'deep', 'vs_3bet', 'min_open')
+defaultdict(<class 'float'>, {'fold': 0.3333333333333333, 'check/call': 0.8333333333333333, 'raise': 314.8333333333333})
+--------------------------------
+('trash_offsuit_hands', 'SB', 'short', 'vs_4bet', 'jam')
+defaultdict(<class 'float'>, {'fold': 0.3333333333333333, 'check/call': 6.333333333333333, 'raise': 2813.333333333333})
+--------------------------------
+('trash_offsuit_hands', 'BB', 'short', 'vs_4bet', 'large_open')
+defaultdict(<class 'float'>, {})
+--------------------------------
+('premium_pairs', 'SB', 'deep', 'open', 'min_open')
+defaultdict(<class 'float'>, {'fold': 325.0406898013776, 'check/call': 331.6003804843516, 'raise': 7.358929714270612})
+--------------------------------
+('suited_connectors', 'BB', 'deep', 'vs_open', 'min_open')
+defaultdict(<class 'float'>, {})
+--------------------------------
+('suited_connectors', 'BB', 'deep', 'vs_4bet', '2.5x_open')
+defaultdict(<class 'float'>, {})
+--------------------------------
+('weak_suited_aces', 'BB', 'deep', 'vs_3bet', 'min_open')
+defaultdict(<class 'float'>, {})
+--------------------------------
+('premium_suited_broadways', 'SB', 'deep', 'vs_4bet', '2.5x_open')
+defaultdict(<class 'float'>, {'fold': 100.30422987089254, 'check/call': 102.36160479989204, 'raise': 7.33416532921542})
+--------------------------------
+('suited_gappers', 'BB', 'deep', 'root', 'min_open')
+defaultdict(<class 'float'>, {})
+--------------------------------
+('suited_gappers', 'BB', 'deep', 'vs_3bet', 'min_open')
+defaultdict(<class 'float'>, {})
+--------------------------------
+('suited_gappers', 'BB', 'short', 'vs_4bet', 'jam')
+defaultdict(<class 'float'>, {})
+--------------------------------
+('small_pairs', 'SB', 'deep', 'vs_4bet', '2.5x_open')
+defaultdict(<class 'float'>, {'fold': 139.45040267530817, 'check/call': 143.21576577696007, 'raise': 1.3338315477318166})
+--------------------------------
+('weak_offsuit_broadways', 'SB', 'deep', 'open', 'min_open')
+defaultdict(<class 'float'>, {'fold': 533.5659016264773, 'check/call': 551.7743928254145, 'raise': 20.659705548109596})
+--------------------------------
+('weak_offsuit_broadways', 'SB', 'deep', 'vs_4bet', '2.5x_open')
+defaultdict(<class 'float'>, {'fold': 174.3185132905602, 'check/call': 180.34724287718134, 'raise': 4.334243832258454})
+--------------------------------
+('suited_connectors', 'BB', 'short', 'vs_4bet', 'jam')
+defaultdict(<class 'float'>, {})
+--------------------------------
+('medium_pairs', 'BB', 'deep', 'root', 'min_open')
+defaultdict(<class 'float'>, {})
+--------------------------------
+('premium_offsuit_broadways', 'BB', 'deep', 'vs_3bet', 'min_open')
+defaultdict(<class 'float'>, {})
+--------------------------------
+('suited_gappers', 'BB', 'deep', 'vs_open', 'min_open')
+defaultdict(<class 'float'>, {})
+--------------------------------
+('medium_pairs', 'SB', 'deep', 'open', 'min_open')
+defaultdict(<class 'float'>, {'fold': 208.96239612886845, 'check/call': 235.70427053779807, 'raise': 0.3333333333333333})
+--------------------------------
+('medium_pairs', 'SB', 'deep', 'vs_4bet', '2.5x_open')
+defaultdict(<class 'float'>, {'fold': 78.52269666802732, 'check/call': 82.14396999863935, 'raise': 0.3333333333333333})
+--------------------------------
+('medium_pairs', 'SB', 'short', 'vs_4bet', 'large_open')
+defaultdict(<class 'float'>, {'fold': 31.77464539215889, 'check/call': 34.892021274507776, 'raise': 0.3333333333333333})
+--------------------------------
+('premium_suited_broadways', 'BB', 'deep', 'root', 'min_open')
+defaultdict(<class 'float'>, {})
+--------------------------------
+('premium_suited_broadways', 'BB', 'deep', 'vs_3bet', 'min_open')
+defaultdict(<class 'float'>, {})
+--------------------------------
+('premium_suited_broadways', 'BB', 'short', 'vs_4bet', 'jam')
+defaultdict(<class 'float'>, {})
+--------------------------------
+('premium_pairs', 'BB', 'deep', 'root', 'min_open')
+defaultdict(<class 'float'>, {})
+--------------------------------
+('premium_pairs', 'BB', 'deep', 'vs_3bet', 'min_open')
+defaultdict(<class 'float'>, {})
+--------------------------------
+('premium_pairs', 'BB', 'deep', 'vs_open', 'min_open')
+defaultdict(<class 'float'>, {})
+--------------------------------
+('weak_suited_aces', 'SB', 'deep', 'open', 'min_open')
+defaultdict(<class 'float'>, {'fold': 356.6092672762532, 'check/call': 444.0573993904136, 'raise': 0.3333333333333333})
+--------------------------------
+('weak_suited_aces', 'SB', 'deep', 'vs_4bet', '2.5x_open')
+defaultdict(<class 'float'>, {'fold': 124.16904113592706, 'check/call': 133.49762553073964, 'raise': 0.3333333333333333})
+--------------------------------
+('weak_suited_aces', 'SB', 'short', 'vs_4bet', 'large_open')
+defaultdict(<class 'float'>, {'fold': 40.692045491631305, 'check/call': 45.97462117503537, 'raise': 0.3333333333333333})
+--------------------------------
+('medium_pairs', 'BB', 'deep', 'vs_3bet', 'min_open')
+defaultdict(<class 'float'>, {})
+--------------------------------
+('medium_pairs', 'BB', 'short', 'vs_4bet', 'jam')
+defaultdict(<class 'float'>, {})
+--------------------------------
+('premium_pairs', 'SB', 'deep', 'limped', 'limp')
+defaultdict(<class 'float'>, {'fold': 0.3333333333333333, 'check/call': 0.3333333333333333, 'raise': 611.3333333333333})
+--------------------------------
+('weak_offsuit_broadways', 'SB', 'deep', 'limped', 'limp')
+defaultdict(<class 'float'>, {'fold': 0.3333333333333333, 'check/call': 3.236668545283103, 'raise': 1164.4299981213835})
+--------------------------------
+('suited_gappers', 'SB', 'deep', 'limped', 'limp')
+defaultdict(<class 'float'>, {'fold': 0.3333333333333333, 'check/call': 0.3333333333333333, 'raise': 833.3333333333333})
+--------------------------------
+('premium_suited_broadways', 'SB', 'deep', 'limped', 'limp')
+defaultdict(<class 'float'>, {'fold': 0.3333333333333333, 'check/call': 9.729372937293729, 'raise': 561.9372937293729})
+--------------------------------
+('premium_suited_broadways', 'SB', 'deep', 'vs_3bet', 'min_open')
+defaultdict(<class 'float'>, {'fold': 0.3333333333333333, 'check/call': 2.9723163841807905, 'raise': 182.69435028248586})
+--------------------------------
+('suited_gappers', 'SB', 'deep', 'vs_4bet', '2.5x_open')
+defaultdict(<class 'float'>, {'fold': 121.8486468064415, 'check/call': 130.8180198602252, 'raise': 0.3333333333333333})
+--------------------------------
+('small_pairs', 'BB', 'short', 'vs_4bet', 'jam')
+defaultdict(<class 'float'>, {})
+--------------------------------
+('suited_gappers', 'SB', 'short', 'vs_4bet', 'large_open')
+defaultdict(<class 'float'>, {'fold': 44.61117706626176, 'check/call': 51.055489600404904, 'raise': 0.3333333333333333})
+--------------------------------
+('suited_gappers', 'BB', 'deep', 'vs_4bet', '2.5x_open')
+defaultdict(<class 'float'>, {})
+--------------------------------
+('premium_suited_aces', 'SB', 'deep', 'open', 'min_open')
+defaultdict(<class 'float'>, {'fold': 171.54936919348816, 'check/call': 189.11729747317835, 'raise': 0.3333333333333333})
+--------------------------------
+('premium_suited_aces', 'SB', 'deep', 'vs_4bet', '2.5x_open')
+defaultdict(<class 'float'>, {'fold': 57.8631558249704, 'check/call': 59.803510841696266, 'raise': 0.3333333333333333})
+--------------------------------
+('premium_suited_aces', 'SB', 'short', 'vs_4bet', 'large_open')
+defaultdict(<class 'float'>, {'fold': 22.57210688788788, 'check/call': 24.09455977877879, 'raise': 0.3333333333333333})
+--------------------------------
+('premium_offsuit_aces', 'BB', 'deep', 'vs_3bet', 'min_open')
+defaultdict(<class 'float'>, {})
+--------------------------------
+('premium_pairs', 'SB', 'deep', 'vs_4bet', '2.5x_open')
+defaultdict(<class 'float'>, {'fold': 117.01058380593773, 'check/call': 119.65298685332671, 'raise': 1.3364293407355654})
+--------------------------------
+('weak_suited_aces', 'BB', 'short', 'vs_4bet', 'jam')
+defaultdict(<class 'float'>, {})
+--------------------------------
+('premium_suited_aces', 'SB', 'deep', 'limped', 'limp')
+defaultdict(<class 'float'>, {'fold': 0.3333333333333333, 'check/call': 5.112318528342064, 'raise': 376.5543481383246})
+--------------------------------
+('premium_suited_aces', 'SB', 'deep', 'vs_3bet', 'min_open')
+defaultdict(<class 'float'>, {'fold': 0.3333333333333333, 'check/call': 2.0606060606060606, 'raise': 113.60606060606061})
+--------------------------------
+('premium_offsuit_broadways', 'BB', 'deep', 'vs_4bet', '2.5x_open')
+defaultdict(<class 'float'>, {})
+--------------------------------
+('premium_suited_aces', 'BB', 'deep', 'vs_4bet', '2.5x_open')
+defaultdict(<class 'float'>, {})
+--------------------------------
+('small_pairs', 'SB', 'short', 'vs_4bet', 'large_open')
+defaultdict(<class 'float'>, {'fold': 47.61892773239188, 'check/call': 55.04773893427478, 'raise': 0.3333333333333333})
+--------------------------------
+('premium_suited_broadways', 'BB', 'deep', 'vs_open', 'min_open')
+defaultdict(<class 'float'>, {})
+--------------------------------
+('premium_suited_broadways', 'BB', 'deep', 'vs_4bet', '2.5x_open')
+defaultdict(<class 'float'>, {})
+--------------------------------
+('premium_suited_broadways', 'BB', 'short', 'vs_4bet', 'large_open')
+defaultdict(<class 'float'>, {})
+--------------------------------
+('weak_suited_aces', 'BB', 'deep', 'vs_4bet', '2.5x_open')
+defaultdict(<class 'float'>, {})
+--------------------------------
+('weak_suited_aces', 'BB', 'short', 'vs_4bet', 'large_open')
+defaultdict(<class 'float'>, {})
+--------------------------------
+('premium_offsuit_broadways', 'SB', 'deep', 'open', 'min_open')
+defaultdict(<class 'float'>, {'fold': 149.2099409381907, 'check/call': 153.80218027393053, 'raise': 1.9878787878787878})
+--------------------------------
+('premium_suited_aces', 'BB', 'deep', 'vs_3bet', 'min_open')
+defaultdict(<class 'float'>, {})
+--------------------------------
+('premium_suited_aces', 'BB', 'short', 'vs_4bet', 'jam')
+defaultdict(<class 'float'>, {})
+--------------------------------
+('weak_offsuit_broadways', 'SB', 'deep', 'vs_3bet', 'min_open')
+defaultdict(<class 'float'>, {'fold': 0.3333333333333333, 'check/call': 4.1867816091954015, 'raise': 393.4798850574713})
+--------------------------------
+('suited_connectors', 'SB', 'deep', 'vs_4bet', '2.5x_open')
+defaultdict(<class 'float'>, {'fold': 120.8877095190132, 'check/call': 124.25849815170017, 'raise': 2.853792329286607})
+--------------------------------
+('premium_offsuit_broadways', 'BB', 'short', 'vs_4bet', 'jam')
+defaultdict(<class 'float'>, {})
+--------------------------------
+('premium_offsuit_aces', 'SB', 'deep', 'vs_4bet', '2.5x_open')
+defaultdict(<class 'float'>, {'fold': 87.55245901915349, 'check/call': 89.11406496291498, 'raise': 6.333476017931532})
+--------------------------------
+('premium_offsuit_broadways', 'SB', 'deep', 'vs_4bet', '2.5x_open')
+defaultdict(<class 'float'>, {'fold': 41.99098456551317, 'check/call': 43.1756821011535, 'raise': 0.8333333333333333})
+--------------------------------
+('weak_suited_aces', 'SB', 'deep', 'vs_3bet', 'min_open')
+defaultdict(<class 'float'>, {'fold': 0.3333333333333333, 'check/call': 0.3333333333333333, 'raise': 252.33333333333331})
+--------------------------------
+('suited_connectors', 'SB', 'deep', 'limped', 'limp')
+defaultdict(<class 'float'>, {'fold': 0.3333333333333333, 'check/call': 1.1333333333333335, 'raise': 806.5333333333333})
+--------------------------------
+('suited_connectors', 'SB', 'deep', 'vs_3bet', 'min_open')
+defaultdict(<class 'float'>, {'fold': 0.3333333333333333, 'check/call': 0.3333333333333333, 'raise': 270.3333333333333})
+--------------------------------
+('premium_pairs', 'SB', 'short', 'vs_4bet', 'large_open')
+defaultdict(<class 'float'>, {'fold': 37.15945363022259, 'check/call': 41.50721303644408, 'raise': 0.3333333333333333})
+--------------------------------
+('premium_offsuit_aces', 'BB', 'short', 'vs_4bet', 'jam')
+defaultdict(<class 'float'>, {})
+--------------------------------
+('premium_offsuit_broadways', 'SB', 'short', 'vs_4bet', 'large_open')
+defaultdict(<class 'float'>, {'fold': 15.961722916325254, 'check/call': 16.704943750341418, 'raise': 0.3333333333333333})
+--------------------------------
+('weak_offsuit_broadways', 'SB', 'short', 'vs_4bet', 'jam')
+defaultdict(<class 'float'>, {'fold': 0.3333333333333333, 'check/call': 1.8333333333333333, 'raise': 121.83333333333333})
+--------------------------------
+('small_pairs', 'BB', 'deep', 'vs_4bet', '2.5x_open')
+defaultdict(<class 'float'>, {})
+--------------------------------
+('medium_pairs', 'BB', 'deep', 'vs_open', 'min_open')
+defaultdict(<class 'float'>, {})
+--------------------------------
+('medium_pairs', 'SB', 'deep', 'limped', 'limp')
+defaultdict(<class 'float'>, {'fold': 0.3333333333333333, 'check/call': 7.5080506096479285, 'raise': 457.1586160570188})
+--------------------------------
+('medium_pairs', 'SB', 'deep', 'vs_3bet', 'min_open')
+defaultdict(<class 'float'>, {'fold': 0.3333333333333333, 'check/call': 1.0242424242424242, 'raise': 164.64242424242423})
+--------------------------------
+('premium_pairs', 'BB', 'deep', 'vs_4bet', '2.5x_open')
+defaultdict(<class 'float'>, {})
+--------------------------------
+('weak_offsuit_broadways', 'BB', 'short', 'vs_4bet', 'jam')
+defaultdict(<class 'float'>, {})
+--------------------------------
+('suited_gappers', 'BB', 'short', 'vs_4bet', 'large_open')
+defaultdict(<class 'float'>, {})
+--------------------------------
+('premium_pairs', 'BB', 'short', 'vs_4bet', 'jam')
+defaultdict(<class 'float'>, {})
+--------------------------------
+('weak_offsuit_broadways', 'BB', 'deep', 'vs_4bet', '2.5x_open')
+defaultdict(<class 'float'>, {})
+--------------------------------
+('medium_pairs', 'SB', 'short', 'vs_4bet', 'jam')
+defaultdict(<class 'float'>, {'fold': 0.3333333333333333, 'check/call': 3.333333333333333, 'raise': 53.33333333333333})
+--------------------------------
+('weak_offsuit_broadways', 'BB', 'short', 'vs_4bet', 'large_open')
+defaultdict(<class 'float'>, {})
+--------------------------------
+('premium_suited_broadways', 'SB', 'short', 'vs_4bet', 'jam')
+defaultdict(<class 'float'>, {'fold': 0.3333333333333333, 'check/call': 0.8333333333333333, 'raise': 64.83333333333333})
+--------------------------------
+('premium_pairs', 'SB', 'deep', 'vs_3bet', 'min_open')
+defaultdict(<class 'float'>, {'fold': 0.3333333333333333, 'check/call': 2.686781609195402, 'raise': 207.97988505747128})
+--------------------------------
+('suited_gappers', 'SB', 'deep', 'vs_3bet', 'min_open')
+defaultdict(<class 'float'>, {'fold': 0.3333333333333333, 'check/call': 1.3333333333333333, 'raise': 277.3333333333333})
+--------------------------------
+('suited_connectors', 'SB', 'short', 'vs_4bet', 'large_open')
+defaultdict(<class 'float'>, {'fold': 39.81320574867632, 'check/call': 44.853460917990354, 'raise': 0.3333333333333333})
+--------------------------------
+('premium_offsuit_broadways', 'SB', 'deep', 'vs_3bet', 'min_open')
+defaultdict(<class 'float'>, {'fold': 0.3333333333333333, 'check/call': 2.686781609195402, 'raise': 89.97988505747126})
+--------------------------------
+('weak_offsuit_broadways', 'SB', 'short', 'vs_4bet', 'large_open')
+defaultdict(<class 'float'>, {'fold': 59.69885779231914, 'check/call': 71.96780887434754, 'raise': 0.3333333333333333})
+--------------------------------
+('medium_pairs', 'BB', 'deep', 'vs_4bet', '2.5x_open')
+defaultdict(<class 'float'>, {})
+--------------------------------
+('small_pairs', 'SB', 'short', 'vs_4bet', 'jam')
+defaultdict(<class 'float'>, {'fold': 0.3333333333333333, 'check/call': 0.3333333333333333, 'raise': 96.33333333333333})
+--------------------------------
+('suited_connectors', 'BB', 'short', 'vs_4bet', 'large_open')
+defaultdict(<class 'float'>, {})
+--------------------------------
+('premium_offsuit_aces', 'BB', 'short', 'vs_4bet', 'large_open')
+defaultdict(<class 'float'>, {})
+--------------------------------
+('premium_pairs', 'SB', 'short', 'vs_4bet', 'jam')
+defaultdict(<class 'float'>, {'fold': 0.3333333333333333, 'check/call': 0.8333333333333333, 'raise': 74.83333333333333})
+--------------------------------
+('premium_suited_aces', 'SB', 'short', 'vs_4bet', 'jam')
+defaultdict(<class 'float'>, {'fold': 0.3333333333333333, 'check/call': 2.833333333333333, 'raise': 33.83333333333333})
+--------------------------------
+('suited_gappers', 'SB', 'short', 'vs_4bet', 'jam')
+defaultdict(<class 'float'>, {'fold': 0.3333333333333333, 'check/call': 0.3333333333333333, 'raise': 95.33333333333333})
+--------------------------------
+('small_pairs', 'BB', 'short', 'vs_4bet', 'large_open')
+defaultdict(<class 'float'>, {})
+--------------------------------
+('suited_connectors', 'SB', 'short', 'vs_4bet', 'jam')
+defaultdict(<class 'float'>, {'fold': 0.3333333333333333, 'check/call': 2.333333333333333, 'raise': 89.33333333333333})
+--------------------------------
+('medium_pairs', 'BB', 'short', 'vs_4bet', 'large_open')
+defaultdict(<class 'float'>, {})
+--------------------------------
+('weak_suited_aces', 'SB', 'short', 'vs_4bet', 'jam')
+defaultdict(<class 'float'>, {'fold': 0.3333333333333333, 'check/call': 0.3333333333333333, 'raise': 98.33333333333333})
+--------------------------------
+('premium_offsuit_aces', 'SB', 'deep', 'vs_3bet', 'min_open')
+defaultdict(<class 'float'>, {'fold': 0.3333333333333333, 'check/call': 4.39367816091954, 'raise': 187.27298850574712})
+--------------------------------
+('premium_suited_broadways', 'SB', 'short', 'vs_4bet', 'large_open')
+defaultdict(<class 'float'>, {'fold': 33.13048888322367, 'check/call': 36.536177783443, 'raise': 0.3333333333333333})
+--------------------------------
+('premium_offsuit_aces', 'SB', 'short', 'vs_4bet', 'jam')
+defaultdict(<class 'float'>, {'fold': 0.3333333333333333, 'check/call': 2.833333333333333, 'raise': 53.83333333333333})
+--------------------------------
+('premium_offsuit_aces', 'SB', 'short', 'vs_4bet', 'large_open')
+defaultdict(<class 'float'>, {'fold': 26.74839678393856, 'check/call': 28.91826988272811, 'raise': 0.3333333333333333})
+--------------------------------
+('premium_offsuit_broadways', 'SB', 'short', 'vs_4bet', 'jam')
+defaultdict(<class 'float'>, {'fold': 0.3333333333333333, 'check/call': 1.3333333333333333, 'raise': 37.33333333333333})
+--------------------------------
+('premium_offsuit_broadways', 'BB', 'short', 'vs_4bet', 'large_open')
+defaultdict(<class 'float'>, {})
+--------------------------------
+('premium_pairs', 'BB', 'short', 'vs_4bet', 'large_open')
+defaultdict(<class 'float'>, {})
+--------------------------------
+('premium_suited_aces', 'BB', 'short', 'vs_4bet', 'large_open')
+defaultdict(<class 'float'>, {})
+--------------------------------

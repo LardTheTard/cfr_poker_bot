@@ -12,7 +12,7 @@ class Logger:
         pass
 
     def log(self, message: str) -> None:
-        print(message)
+        # print(message)
         with open(self.output_path, "a") as f:
             f.write(str(message) + "\n")
 
