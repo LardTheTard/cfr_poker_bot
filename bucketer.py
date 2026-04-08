@@ -155,7 +155,7 @@ class Bucketer:
 
         return (
             hand_bucket,
-            # position_bucket,
+            position_bucket,
             stack_bucket,
             history_bucket,
             size_bucket,

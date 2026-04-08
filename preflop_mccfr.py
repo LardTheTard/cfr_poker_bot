@@ -18,25 +18,34 @@ def payoff_p0(state: State, pf_history: list[str]):
         state.check_or_call()
 
     if state.folded_status:
-        if state.stacks[0] > state.starting_stacks[0]:
-            test_logger.log(f"{1 + pf_history.count('raise')}, Folded")
-            return 1 + pf_history.count('raise')
-        elif state.stacks[0] < state.starting_stacks[0]:
-            test_logger.log(f"{-1 * (1 + pf_history.count('raise'))}, Folded")
-            return -1 * (1 + pf_history.count('raise'))
-        else: 
-            test_logger.log("0, Folded")
-            return 0
-    p0_holes = ''.join(repr(c) for c in state.hole_cards[0] if c is not None)
-    p1_holes = ''.join(repr(c) for c in state.hole_cards[1] if c is not None)
-    board = ''
-    for i in range(5): 
-        board += repr(state.board_cards[i][0])
-    p0 = StandardHighHand.from_game(p0_holes, board)
-    p1 = StandardHighHand.from_game(p1_holes, board)
-    if p0 == p1:
-        return 0
-    return 1 + pf_history.count('raise') if p0 > p1 else -1 * (1 + pf_history.count('raise'))
+        # if state.stacks[0] > state.starting_stacks[0]:
+        #     test_logger.log(f"{1 + pf_history.count('raise')}, Folded")
+        #     return 1 + pf_history.count('raise')
+        # elif state.stacks[0] < state.starting_stacks[0]:
+        #     test_logger.log(f"{-1 * (1 + pf_history.count('raise'))}, Folded")
+        #     return -1 * (1 + pf_history.count('raise'))
+        # else: 
+        #     test_logger.log("0, Folded")
+        #     return 0
+        return state.stacks[0] - state.starting_stacks[0]
+    p0_holes = ''.join(repr(c) for c in state.hole_cards[0] if c is not None) # NO NEED FOR THIS ANYMORE SINCE EVERYTHINGS ALREADY PAID OUT
+    p1_holes = ''.join(repr(c) for c in state.hole_cards[1] if c is not None) # NO NEED FOR THIS ANYMORE SINCE EVERYTHINGS ALREADY PAID OUT
+    board = '' # NO NEED FOR THIS ANYMORE SINCE EVERYTHINGS ALREADY PAID OUT
+    for i in range(5): # NO NEED FOR THIS ANYMORE SINCE EVERYTHINGS ALREADY PAID OUT
+        board += repr(state.board_cards[i][0]) # NO NEED FOR THIS ANYMORE SINCE EVERYTHINGS ALREADY PAID OUT
+    p0 = StandardHighHand.from_game(p0_holes, board) # NO NEED FOR THIS ANYMORE SINCE EVERYTHINGS ALREADY PAID OUT
+    p1 = StandardHighHand.from_game(p1_holes, board) # NO NEED FOR THIS ANYMORE SINCE EVERYTHINGS ALREADY PAID OUT
+
+    # test_logger.log(f"p0: {p0}")
+    # test_logger.log(f"p1: {p1}")
+    # test_logger.log(f"p0 won? {p0 > p1}")
+    # test_logger.log(state.stacks[0] - state.starting_stacks[0])
+    # test_logger.log('')
+
+    if p0 == p1: # NO NEED FOR THIS ANYMORE SINCE EVERYTHINGS ALREADY PAID OUT
+        return 0 # NO NEED FOR THIS ANYMORE SINCE EVERYTHINGS ALREADY PAID OUT
+    return state.stacks[0] - state.starting_stacks[0]
+    # return 1 + pf_history.count('raise') if p0 > p1 else -1 * (1 + pf_history.count('raise'))
 
 # ── Info-set node ──────────────────────────────────────────────────────────────
 
@@ -44,6 +53,7 @@ class Node:
     def __init__(self):
         self.regret_sum   = defaultdict(float)
         self.strategy_sum = defaultdict(float)
+        self.times_visited = 0
 
     def get_strategy(self, actions):
         """Regret-matching (no reach weighting needed for external sampling)."""
@@ -85,6 +95,7 @@ def mccfr(state: State, traverser: int, pf_history: list[str]):
     if bucket not in nodes:
         nodes[bucket] = Node()
     node  = nodes[bucket]
+    node.times_visited += 1
 
     if cur_actor == traverser:
         # ── Traversing player: explore every action ──────────────────────────
@@ -122,12 +133,12 @@ def mccfr(state: State, traverser: int, pf_history: list[str]):
         node_util = sum(strat[action] * utils[action] for action in actions)
         
         for action in actions:
-            node.regret_sum[action] += utils[action] - node_util
+            node.regret_sum[action] = max(node.regret_sum[action] + utils[action] - node_util, 0)
 
         test2_logger.log(bucket)
-        test2_logger.log(utils)
-        test2_logger.log('regretsum')
-        test2_logger.log(node.regret_sum)
+        test2_logger.log(f'utils: {utils}')
+        test2_logger.log(f'times_visited: {node.times_visited}')
+        test2_logger.log(f"regretsum: {node.regret_sum}")
         test2_logger.log('------------------------')
 
         return node_util
@@ -141,11 +152,12 @@ def mccfr(state: State, traverser: int, pf_history: list[str]):
             actions = ['fold', 'check/call']
         strat = node.get_strategy(actions)
         probs = [strat[action] for action in actions]
-        
-        test_logger.log('')
+
         test_logger.log(probs)
-        test_logger.log(f'traverser: {traverser}')
-        
+        test_logger.log(f"Opponent/cur player: {1 - traverser}")
+        test_logger.log(bucket)
+        test_logger.log('')
+
         sampled_action = random.choices(actions, weights=probs)[0]
         if actions.index(sampled_action) == 0:
             next_state.fold()
@@ -219,7 +231,7 @@ if __name__ == '__main__':
     logger.clear_logs() # clears logs so new hand can be logged
 
     random.seed() 
-    train(1000)
+    train(50_000)
     
     for key, value in nodes.items():
         logger.log(key)

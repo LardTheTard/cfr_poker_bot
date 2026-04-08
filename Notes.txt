@@ -6,3 +6,14 @@ how much invested in pot or a bonus if no additional money is lost?
 
 Alternate traversers maybe? Since if I am always traversing as 0, I will never touch any nodes for 1 and thus
 my opponent will always be playing randomly since their strategy is never adjusted.
+
+Record hands for each test, such as what was the hand that won/lost that resulted in this util spread
+(what raised? what called?)
+
+Record hands for each type of bucket each in a seperate text file for logging.
+Also record how many times that node was visited
+
+Maybe the reason behind the high ev for calling with trash hands is bceause trash offsuit is too broad
+and still has ev against stronger hands. However, it is also visited the most so it SHOULDNT matter???
+Also focus more hands played on rarer hand combinations (eg. suited broadways) as those dont get enough
+oppurtunity to converge
