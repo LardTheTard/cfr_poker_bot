@@ -1,0 +1,465 @@
+('weak_suited_aces', 'deep', 'root', 'min_open')
+fold: 0.04901960784313724
+check/call: 0.7476243461128355
+raise: 0.20335604604402718
+--------------------------------
+('trash_offsuit_hands', 'deep', 'open', 'min_open')
+fold: 0.004613693723942555
+check/call: 0.7231161386199835
+raise: 0.2722701676560739
+--------------------------------
+('weak_suited_aces', 'deep', 'vs_3bet', 'min_open')
+fold: 0.023809523809523808
+check/call: 0.9117385590599876
+raise: 0.06445191713048856
+--------------------------------
+('trash_offsuit_hands', 'deep', 'vs_4bet', '2.5x_open')
+fold: 0.004432624113475176
+check/call: 0.7612113489458201
+raise: 0.23435602694070462
+--------------------------------
+('weak_suited_aces', 'short', 'vs_4bet', 'jam')
+fold: 0.05555555555555555
+check/call: 0.5072175442509295
+raise: 0.43722690019351496
+--------------------------------
+('trash_offsuit_hands', 'short', 'vs_4bet', 'large_open')
+fold: 0.005714285714285714
+check/call: 0.9942857142857143
+--------------------------------
+('trash_offsuit_hands', 'deep', 'root', 'min_open')
+fold: 0.0008503401360544217
+check/call: 0.5689992032574953
+raise: 0.4301504566064502
+--------------------------------
+('trash_offsuit_hands', 'deep', 'limped', 'limp')
+fold: 0.013302034428794995
+check/call: 0.5957223775054521
+raise: 0.390975588065753
+--------------------------------
+('trash_offsuit_hands', 'deep', 'vs_open', 'min_open')
+fold: 0.0016181229773462782
+check/call: 0.38275264006881426
+raise: 0.6156292369538395
+--------------------------------
+('trash_offsuit_hands', 'deep', 'vs_3bet', 'min_open')
+fold: 0.0009746588693957111
+check/call: 0.8409969901023503
+raise: 0.158028351028254
+--------------------------------
+('trash_offsuit_hands', 'short', 'vs_4bet', 'jam')
+fold: 0.0051714752313554695
+check/call: 0.05042874019923
+raise: 0.9443997845694144
+--------------------------------
+('suited_connectors', 'deep', 'root', 'min_open')
+fold: 0.037037037037037035
+check/call: 0.9259259259259258
+raise: 0.037037037037037035
+--------------------------------
+('premium_suited_aces', 'deep', 'root', 'min_open')
+fold: 0.04761904761904761
+check/call: 0.2975429031294496
+raise: 0.6548380492515028
+--------------------------------
+('suited_gappers', 'deep', 'root', 'min_open')
+fold: 0.02222222222222222
+check/call: 0.44630235447390393
+raise: 0.5314754233038738
+--------------------------------
+('premium_suited_aces', 'deep', 'open', 'min_open')
+fold: 0.08333333333333333
+check/call: 0.45733012306046017
+raise: 0.45933654360620646
+--------------------------------
+('suited_gappers', 'deep', 'vs_3bet', 'min_open')
+fold: 0.03333333333333333
+check/call: 0.3248025493748189
+raise: 0.6418641172918479
+--------------------------------
+('premium_suited_aces', 'deep', 'vs_4bet', '2.5x_open')
+fold: 0.05555555555555555
+check/call: 0.5463716108452951
+raise: 0.3980728335991493
+--------------------------------
+('suited_gappers', 'short', 'vs_4bet', 'jam')
+fold: 0.047619047619047616
+check/call: 0.362075084642972
+raise: 0.5903058677379803
+--------------------------------
+('premium_suited_aces', 'short', 'vs_4bet', 'large_open')
+fold: 0.125
+check/call: 0.875
+--------------------------------
+('premium_pairs', 'deep', 'root', 'min_open')
+fold: 0.037037037037037035
+check/call: 0.12683600689623362
+raise: 0.8361269560667294
+--------------------------------
+('small_pairs', 'deep', 'root', 'min_open')
+fold: 0.02222222222222222
+check/call: 0.06664693109154814
+raise: 0.9111308466862297
+--------------------------------
+('small_pairs', 'deep', 'vs_3bet', 'min_open')
+fold: 0.13095238095238096
+check/call: 0.8452380952380951
+raise: 0.023809523809523808
+--------------------------------
+('premium_offsuit_broadways', 'deep', 'root', 'min_open')
+fold: 0.3333333333333333
+check/call: 0.3333333333333333
+raise: 0.3333333333333333
+--------------------------------
+('weak_offsuit_broadways', 'deep', 'limped', 'limp')
+fold: 0.08333333333333333
+check/call: 0.3234915297897465
+raise: 0.5931751368769201
+--------------------------------
+('weak_offsuit_broadways', 'deep', 'open', 'min_open')
+fold: 0.13888888888888887
+check/call: 0.7936507936507936
+raise: 0.06746031746031746
+--------------------------------
+('weak_offsuit_broadways', 'deep', 'vs_4bet', '2.5x_open')
+fold: 0.09259259259259259
+check/call: 0.6239034409762076
+raise: 0.2835039664311998
+--------------------------------
+('weak_offsuit_broadways', 'short', 'vs_4bet', 'large_open')
+fold: 0.1111111111111111
+check/call: 0.8888888888888888
+--------------------------------
+('premium_offsuit_aces', 'deep', 'root', 'min_open')
+fold: 0.047619047619047616
+check/call: 0.35119047619047616
+raise: 0.6011904761904762
+--------------------------------
+('weak_suited_aces', 'deep', 'limped', 'limp')
+fold: 0.33333333333333337
+check/call: 0.5833333333333334
+raise: 0.08333333333333334
+--------------------------------
+('weak_suited_aces', 'deep', 'open', 'min_open')
+fold: 0.05555555555555555
+check/call: 0.45807837726805173
+raise: 0.4863660671763927
+--------------------------------
+('weak_suited_aces', 'deep', 'vs_4bet', '2.5x_open')
+fold: 0.037037037037037035
+check/call: 0.5156579506155737
+raise: 0.4473050123473892
+--------------------------------
+('weak_suited_aces', 'short', 'vs_4bet', 'large_open')
+fold: 0.08333333333333333
+check/call: 0.9166666666666666
+--------------------------------
+('weak_offsuit_broadways', 'deep', 'vs_3bet', 'min_open')
+fold: 0.04761904761904762
+check/call: 0.6048840949246168
+raise: 0.3474968574563357
+--------------------------------
+('premium_pairs', 'deep', 'vs_3bet', 'min_open')
+fold: 0.16666666666666669
+check/call: 0.7666666666666667
+raise: 0.06666666666666668
+--------------------------------
+('small_pairs', 'deep', 'limped', 'limp')
+fold: 0.03333333333333333
+check/call: 0.2982374730122977
+raise: 0.668429193654369
+--------------------------------
+('small_pairs', 'deep', 'open', 'min_open')
+fold: 0.037037037037037035
+check/call: 0.20206989050340246
+raise: 0.7608930724595605
+--------------------------------
+('premium_offsuit_aces', 'deep', 'limped', 'limp')
+fold: 0.05555555555555555
+check/call: 0.26333587671964215
+raise: 0.6811085677248023
+--------------------------------
+('premium_offsuit_aces', 'deep', 'vs_3bet', 'min_open')
+fold: 0.041666666666666664
+check/call: 0.38223298101916187
+raise: 0.5761003523141714
+--------------------------------
+('premium_offsuit_aces', 'short', 'vs_4bet', 'jam')
+fold: 0.08333333333333333
+check/call: 0.3865324283335316
+raise: 0.5301342383331351
+--------------------------------
+('premium_suited_broadways', 'deep', 'limped', 'limp')
+fold: 0.06666666666666667
+check/call: 0.2973436963668652
+raise: 0.6359896369664682
+--------------------------------
+('premium_suited_broadways', 'deep', 'open', 'min_open')
+fold: 0.3333333333333333
+check/call: 0.3333333333333333
+raise: 0.3333333333333333
+--------------------------------
+('suited_connectors', 'deep', 'limped', 'limp')
+fold: 0.05555555555555555
+check/call: 0.39850820122949465
+raise: 0.5459362432149498
+--------------------------------
+('suited_connectors', 'deep', 'vs_3bet', 'min_open')
+fold: 0.03333333333333334
+check/call: 0.6342015342535384
+raise: 0.33246513241312825
+--------------------------------
+('suited_connectors', 'short', 'vs_4bet', 'jam')
+fold: 0.05555555555555555
+check/call: 0.4124501903175925
+raise: 0.531994254126852
+--------------------------------
+('premium_suited_broadways', 'deep', 'root', 'min_open')
+fold: 0.08333333333333334
+check/call: 0.08333333333333334
+raise: 0.8333333333333334
+--------------------------------
+('medium_pairs', 'deep', 'root', 'min_open')
+fold: 0.06666666666666667
+check/call: 0.14358974358974358
+raise: 0.7897435897435898
+--------------------------------
+('medium_pairs', 'deep', 'vs_3bet', 'min_open')
+fold: 0.08333333333333333
+check/call: 0.3590618183314812
+raise: 0.5576048483351855
+--------------------------------
+('weak_offsuit_broadways', 'deep', 'root', 'min_open')
+fold: 0.017543859649122806
+check/call: 0.742092392189884
+raise: 0.24036374816099318
+--------------------------------
+('suited_connectors', 'deep', 'vs_open', 'min_open')
+fold: 0.4444444444444444
+check/call: 0.4444444444444444
+raise: 0.1111111111111111
+--------------------------------
+('medium_pairs', 'deep', 'limped', 'limp')
+fold: 0.1111111111111111
+check/call: 0.1492063492063492
+raise: 0.7396825396825397
+--------------------------------
+('medium_pairs', 'deep', 'open', 'min_open')
+fold: 0.3333333333333333
+check/call: 0.3333333333333333
+raise: 0.3333333333333333
+--------------------------------
+('medium_pairs', 'deep', 'vs_4bet', '2.5x_open')
+fold: 0.16666666666666669
+check/call: 0.6666666666666667
+raise: 0.16666666666666669
+--------------------------------
+('suited_connectors', 'deep', 'open', 'min_open')
+fold: 0.4166666666666667
+check/call: 0.4166666666666667
+raise: 0.16666666666666669
+--------------------------------
+('suited_connectors', 'deep', 'vs_4bet', '2.5x_open')
+fold: 0.3333333333333333
+check/call: 0.3333333333333333
+raise: 0.3333333333333333
+--------------------------------
+('weak_suited_aces', 'deep', 'vs_open', 'min_open')
+fold: 0.037037037037037035
+check/call: 0.24537037037037035
+raise: 0.7175925925925926
+--------------------------------
+('premium_suited_aces', 'deep', 'vs_3bet', 'min_open')
+fold: 0.05555555555555555
+check/call: 0.3073671497584541
+raise: 0.6370772946859903
+--------------------------------
+('premium_suited_broadways', 'deep', 'vs_3bet', 'min_open')
+fold: 0.047619047619047616
+check/call: 0.37461075028472607
+raise: 0.5777702020962263
+--------------------------------
+('premium_pairs', 'deep', 'vs_open', 'min_open')
+fold: 0.1111111111111111
+check/call: 0.7777777777777777
+raise: 0.1111111111111111
+--------------------------------
+('suited_gappers', 'deep', 'vs_open', 'min_open')
+fold: 0.05555555555555556
+check/call: 0.888888888888889
+raise: 0.05555555555555556
+--------------------------------
+('suited_gappers', 'deep', 'vs_4bet', '2.5x_open')
+fold: 0.3333333333333333
+check/call: 0.3333333333333333
+raise: 0.3333333333333333
+--------------------------------
+('suited_gappers', 'short', 'vs_4bet', 'large_open')
+fold: 0.5
+check/call: 0.5
+--------------------------------
+('small_pairs', 'deep', 'vs_open', 'min_open')
+fold: 0.041666666666666664
+check/call: 0.8099662321333164
+raise: 0.14836710120001692
+--------------------------------
+('small_pairs', 'deep', 'vs_4bet', '2.5x_open')
+fold: 0.027777777777777776
+check/call: 0.6206441715171439
+raise: 0.3515780507050783
+--------------------------------
+('small_pairs', 'short', 'vs_4bet', 'large_open')
+fold: 0.05
+check/call: 0.95
+--------------------------------
+('weak_offsuit_broadways', 'deep', 'vs_open', 'min_open')
+fold: 0.02564102564102564
+check/call: 0.04593438387839757
+raise: 0.9284245904805768
+--------------------------------
+('suited_gappers', 'deep', 'limped', 'limp')
+fold: 0.2619047619047619
+check/call: 0.6845599648256191
+raise: 0.053535273269619016
+--------------------------------
+('suited_gappers', 'deep', 'open', 'min_open')
+fold: 0.3333333333333333
+check/call: 0.3333333333333333
+raise: 0.3333333333333333
+--------------------------------
+('premium_offsuit_aces', 'deep', 'open', 'min_open')
+fold: 0.08333333333333333
+check/call: 0.18452380952380956
+raise: 0.7321428571428571
+--------------------------------
+('premium_offsuit_aces', 'deep', 'vs_4bet', '2.5x_open')
+fold: 0.08333333333333333
+check/call: 0.625
+raise: 0.29166666666666663
+--------------------------------
+('premium_offsuit_aces', 'short', 'vs_4bet', 'large_open')
+fold: 0.125
+check/call: 0.875
+--------------------------------
+('premium_offsuit_broadways', 'deep', 'limped', 'limp')
+fold: 0.1111111111111111
+check/call: 0.23931623931623933
+raise: 0.6495726495726496
+--------------------------------
+('premium_offsuit_broadways', 'deep', 'vs_3bet', 'min_open')
+fold: 0.1111111111111111
+check/call: 0.40598290598290593
+raise: 0.48290598290598297
+--------------------------------
+('premium_offsuit_broadways', 'deep', 'open', 'min_open')
+--------------------------------
+('premium_offsuit_aces', 'deep', 'vs_open', 'min_open')
+fold: 0.06666666666666667
+check/call: 0.6837719298245613
+raise: 0.24956140350877193
+--------------------------------
+('small_pairs', 'short', 'vs_4bet', 'jam')
+fold: 0.33333333333333337
+check/call: 0.471264367816092
+raise: 0.19540229885057472
+--------------------------------
+('premium_pairs', 'deep', 'vs_4bet', '2.5x_open')
+fold: 0.1111111111111111
+check/call: 0.6666666666666666
+raise: 0.2222222222222222
+--------------------------------
+('premium_pairs', 'short', 'vs_4bet', 'large_open')
+fold: 0.16666666666666666
+check/call: 0.8333333333333334
+--------------------------------
+('premium_offsuit_broadways', 'deep', 'vs_4bet', '2.5x_open')
+fold: 0.3333333333333333
+check/call: 0.3333333333333333
+raise: 0.3333333333333333
+--------------------------------
+('premium_pairs', 'short', 'vs_4bet', 'jam')
+fold: 0.20833333333333331
+check/call: 0.4700520833333333
+raise: 0.3216145833333333
+--------------------------------
+('suited_connectors', 'short', 'vs_4bet', 'large_open')
+fold: 0.5
+check/call: 0.5
+--------------------------------
+('medium_pairs', 'deep', 'vs_open', 'min_open')
+fold: 0.1111111111111111
+check/call: 0.7777777777777777
+raise: 0.1111111111111111
+--------------------------------
+('medium_pairs', 'short', 'vs_4bet', 'large_open')
+fold: 0.25
+check/call: 0.75
+--------------------------------
+('premium_suited_aces', 'deep', 'vs_open', 'min_open')
+fold: 0.06666666666666667
+check/call: 0.14666666666666667
+raise: 0.7866666666666666
+--------------------------------
+('premium_suited_broadways', 'deep', 'vs_open', 'min_open')
+fold: 0.08333333333333333
+check/call: 0.71875
+raise: 0.19791666666666663
+--------------------------------
+('premium_suited_broadways', 'short', 'vs_4bet', 'jam')
+fold: 0.08333333333333333
+check/call: 0.3865324283335316
+raise: 0.5301342383331351
+--------------------------------
+('premium_suited_broadways', 'deep', 'vs_4bet', '2.5x_open')
+fold: 0.16666666666666669
+check/call: 0.6666666666666667
+raise: 0.16666666666666669
+--------------------------------
+('premium_pairs', 'deep', 'open', 'min_open')
+fold: 0.08333333333333333
+check/call: 0.13333333333333333
+raise: 0.7833333333333333
+--------------------------------
+('premium_pairs', 'deep', 'limped', 'limp')
+fold: 0.05555555555555555
+check/call: 0.56694366815865
+raise: 0.3775007762857943
+--------------------------------
+('premium_offsuit_broadways', 'deep', 'vs_open', 'min_open')
+fold: 0.3333333333333333
+check/call: 0.3333333333333333
+raise: 0.3333333333333333
+--------------------------------
+('premium_offsuit_broadways', 'short', 'vs_4bet', 'large_open')
+fold: 0.5
+check/call: 0.5
+--------------------------------
+('medium_pairs', 'short', 'vs_4bet', 'jam')
+fold: 0.1111111111111111
+check/call: 0.37202380952380953
+raise: 0.5168650793650794
+--------------------------------
+('premium_suited_broadways', 'short', 'vs_4bet', 'large_open')
+fold: 0.5
+check/call: 0.5
+--------------------------------
+('weak_offsuit_broadways', 'short', 'vs_4bet', 'jam')
+fold: 0.2666666666666667
+check/call: 0.4979249557913351
+raise: 0.23540837754199825
+--------------------------------
+('premium_suited_aces', 'short', 'vs_4bet', 'jam')
+fold: 0.08333333333333333
+check/call: 0.34690090338039115
+raise: 0.5697657632862756
+--------------------------------
+('premium_offsuit_broadways', 'short', 'vs_4bet', 'jam')
+fold: 0.16666666666666669
+check/call: 0.380952380952381
+raise: 0.4523809523809524
+--------------------------------
+('premium_suited_aces', 'deep', 'limped', 'limp')
+fold: 0.08333333333333334
+check/call: 0.08333333333333334
+raise: 0.8333333333333334
+--------------------------------

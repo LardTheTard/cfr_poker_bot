@@ -13,12 +13,20 @@ bucketer = Bucketer()
 def is_terminal(state: State) -> bool:
     return state.actor_index is None or state.street_index > 0#Stop simulating after pre-flop
 
-def payoff_p0(state: State):
+def payoff_p0(state: State, pf_history: list[str]):
     while state.actor_index is not None: #Stop simulating after pre-flop so just check thru
         state.check_or_call()
 
     if state.folded_status:
-        return state.stacks[0] - state.starting_stacks[0]
+        if state.stacks[0] > state.starting_stacks[0]:
+            test_logger.log(f"{1 + pf_history.count('raise')}, Folded")
+            return 1 + pf_history.count('raise')
+        elif state.stacks[0] < state.starting_stacks[0]:
+            test_logger.log(f"{-1 * (1 + pf_history.count('raise'))}, Folded")
+            return -1 * (1 + pf_history.count('raise'))
+        else: 
+            test_logger.log("0, Folded")
+            return 0
     p0_holes = ''.join(repr(c) for c in state.hole_cards[0] if c is not None)
     p1_holes = ''.join(repr(c) for c in state.hole_cards[1] if c is not None)
     board = ''
@@ -28,7 +36,7 @@ def payoff_p0(state: State):
     p1 = StandardHighHand.from_game(p1_holes, board)
     if p0 == p1:
         return 0
-    return state.total_pot_amount / 2 if p0 > p1 else -state.total_pot_amount / 2
+    return 1 + pf_history.count('raise') if p0 > p1 else -1 * (1 + pf_history.count('raise'))
 
 # ── Info-set node ──────────────────────────────────────────────────────────────
 
@@ -66,7 +74,7 @@ def mccfr(state: State, traverser: int, pf_history: list[str]):
     """
 
     if is_terminal(state):
-        payoff = payoff_p0(state)
+        payoff = payoff_p0(state, pf_history)
         return payoff if traverser == 0 else -payoff
 
     bucket = bucketer.preflop_bucket(state, pf_history)
@@ -116,6 +124,12 @@ def mccfr(state: State, traverser: int, pf_history: list[str]):
         for action in actions:
             node.regret_sum[action] += utils[action] - node_util
 
+        test2_logger.log(bucket)
+        test2_logger.log(utils)
+        test2_logger.log('regretsum')
+        test2_logger.log(node.regret_sum)
+        test2_logger.log('------------------------')
+
         return node_util
 
     else:
@@ -127,6 +141,11 @@ def mccfr(state: State, traverser: int, pf_history: list[str]):
             actions = ['fold', 'check/call']
         strat = node.get_strategy(actions)
         probs = [strat[action] for action in actions]
+        
+        test_logger.log('')
+        test_logger.log(probs)
+        test_logger.log(f'traverser: {traverser}')
+        
         sampled_action = random.choices(actions, weights=probs)[0]
         if actions.index(sampled_action) == 0:
             next_state.fold()
@@ -155,17 +174,11 @@ def get_raise_size(state: State, bucket: tuple) -> float:
 
 def train(iters=100_000):
     """Two traversals per iteration (alternate which player is traverser)."""
-    p0_total = 0.0
-    for _ in tqdm(range(iters)):
+    for count in tqdm(range(iters)):
         v0_state = create_state()
-        v1_state = deepcopy(v0_state)
-        v0 = play_hand(v0_state, traverser=0)
-        # v1 = play_hand(v1_state, traverser=1)
-        p0_total += v0
+        v0 = play_hand(v0_state, traverser=count % 2)
 
     print(f"\nTraining complete ({iters:,} iterations, {2*iters:,} traversals)")
-    print(f"  Avg P0 value (from P0 traversals) : {p0_total/iters:+.5f}")
-    print(f"  Nash equilibrium value            : {-1/18:+.5f}\n")
 
 def play_hand(state, traverser):
     pf_history = list()
@@ -199,10 +212,14 @@ def create_state() -> State:
 
 if __name__ == '__main__':
     logger = Logger(output_path="holdem_log.txt")
+    test_logger = Logger(output_path="test.txt")
+    test2_logger = Logger(output_path="test2.txt")
+    test2_logger.clear_logs()
+    test_logger.clear_logs()
     logger.clear_logs() # clears logs so new hand can be logged
 
     random.seed() 
-    train(200_000)
+    train(1000)
     
     for key, value in nodes.items():
         logger.log(key)

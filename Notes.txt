@@ -1,0 +1,8 @@
+Since folding inherently makes winning anything impossible, the regret for it will always be negative
+and thus it quickly gets a 0 probability of being chosen.
+
+Need to add some inherent plus to losing as little money as possible, something to do with
+how much invested in pot or a bonus if no additional money is lost?
+
+Alternate traversers maybe? Since if I am always traversing as 0, I will never touch any nodes for 1 and thus
+my opponent will always be playing randomly since their strategy is never adjusted.
