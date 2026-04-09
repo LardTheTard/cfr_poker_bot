@@ -19,8 +19,6 @@ def is_terminal(state: State) -> bool:
 def payoff_p0(state: State):
     while state.actor_index is not None: #Stop simulating after pre-flop so just check thru
         state.check_or_call()
-    if state.folded_status:
-        return state.stacks[0] - state.starting_stacks[0]
     return state.stacks[0] - state.starting_stacks[0]
 
 # ── Info-set node ──────────────────────────────────────────────────────────────
@@ -36,7 +34,6 @@ class Node:
         pos = sum(max(self.regret_sum[a], 0.0) for a in actions)
         if pos > 0:
             return {a: max(self.regret_sum[a], 0.0) / pos for a in actions}
-            
         return {a: 1.0 / len(actions) for a in actions}
 
     def accumulate_strategy(self, strat, actions):
@@ -90,7 +87,7 @@ def mccfr(state: State, traverser: int, pf_history: list[str]):
                     next_state.check_or_call()
                     next_pf_history.append('check/call')
                 case 'raise':
-                    amount = get_raise_size(state, bucket)
+                    amount = get_rand_raise_size(state, bucket)
                     if next_state.can_complete_bet_or_raise_to(amount):
                         next_state.complete_bet_or_raise_to(amount)
                         next_pf_history.append('raise')
@@ -111,11 +108,11 @@ def mccfr(state: State, traverser: int, pf_history: list[str]):
         for action in actions:
             node.regret_sum[action] = max(node.regret_sum[action] + utils[action] - node_util, 0)
 
-        debug_logger.log(bucket)
-        debug_logger.log(f'utils: {utils}')
-        debug_logger.log(f'times_visited: {node.times_visited}')
-        debug_logger.log(f"regretsum: {node.regret_sum}")
-        debug_logger.log('------------------------')
+        # debug_logger.log(bucket)
+        # debug_logger.log(f'utils: {utils}')
+        # debug_logger.log(f'times_visited: {node.times_visited}')
+        # debug_logger.log(f"regretsum: {node.regret_sum}")
+        # debug_logger.log('------------------------')
 
         return node_util
 
@@ -123,7 +120,7 @@ def mccfr(state: State, traverser: int, pf_history: list[str]):
         # ── Opponent: SAMPLE a single action ─────────────────────────────────
         next_state = deepcopy(state)
         next_pf_history = pf_history.copy()
-        amount = get_raise_size(state, bucket)
+        amount = get_rand_raise_size(state, bucket)
         if not next_state.can_complete_bet_or_raise_to(amount):
             actions = ['fold', 'check/call']
         strat = node.get_strategy(actions)
@@ -138,12 +135,30 @@ def mccfr(state: State, traverser: int, pf_history: list[str]):
         elif actions.index(sampled_action) >= 2:
             next_state.complete_bet_or_raise_to(amount)
             next_pf_history.append('raise')
+
+        # debug_logger.log(bucket) 
+        # debug_logger.log(f'(OPPONENT) times_visited: {node.times_visited}')
+        # debug_logger.log(f"(OPPONENT) regretsum: {node.regret_sum}")
+        # debug_logger.log('------------------------')
+
         return mccfr(next_state, traverser, next_pf_history)
 
 # -- Helper functions -------------------------------
 
-def get_raise_size(state: State, bucket: tuple) -> float:
+def get_halfp_raise_size(state: State, bucket: tuple) -> float:
     amount = max(state.bets) + state.total_pot_amount * 1/2 #Raises half pot by default
+    amount = round(amount)
+    if 'vs_4bet' in bucket or amount > state.stacks[state.actor_index]:
+        all_in_amt = state.stacks[state.actor_index]
+        min_bet = state.min_completion_betting_or_raising_to_amount
+        if min_bet is None:
+            min_bet = 0
+        amount = all_in_amt if all_in_amt >= min_bet else None
+    return amount
+
+def get_rand_raise_size(state: State, bucket: tuple) -> float:
+    amount = max(state.bets) + state.total_pot_amount * random.choice((1/3, 1/2, 2/3, 1))
+    amount = round(amount)
     if 'vs_4bet' in bucket or amount > state.stacks[state.actor_index]:
         all_in_amt = state.stacks[state.actor_index]
         min_bet = state.min_completion_betting_or_raising_to_amount
@@ -204,7 +219,7 @@ if __name__ == '__main__':
     debug_logger = Logger(output_path=f"debug_logs/{timestamp}.txt")
 
     random.seed() 
-    train(100_000)
+    train(200_000)
 
     now = datetime.now()
     timestamp = now.strftime("%Y-%m-%d_%H-%M-%S")
@@ -213,9 +228,7 @@ if __name__ == '__main__':
 
     for key, value in nodes.items():
         logger.log(key)
-        sum = 0
+        node_sum = sum(value.strategy_sum.values())
         for k, v in value.strategy_sum.items():
-            sum += v
-        for k, v in value.strategy_sum.items():
-            logger.log(f"{k}: {v/sum}")
+            logger.log(f"{k}: {v/node_sum}")
         logger.log('--------------------------------')
