@@ -7,7 +7,7 @@ import pickle
 import os
 
 # NAME = input("Input path to desired nodeset: ")
-NAME = r'C:\Users\ZhaoLo\poker\cfr_poker_bot\nodesets\some_unexplored_200k.pkl'
+PATH = r'C:\Users\ZhaoLo\poker\cfr_poker_bot\nodesets\some_unexplored_200k.pkl'
 
 now = datetime.now()
 timestamp = now.strftime("%Y-%m-%d_%H-%M-%S")
@@ -20,7 +20,7 @@ debug_logger = Logger(output_path=f"debug_logs/{timestamp}.txt")
 game_logger = Logger(output_path="game_log.txt")
 game_logger.clear_logs() # clears logs so new hand can be logged
 
-with open(NAME, "rb") as f:
+with open(PATH, "rb") as f:
     nodes = pickle.load(f)
 
 os.makedirs('loaded_nodes', exist_ok=True)
@@ -38,7 +38,7 @@ for bucket, node in nodes.items():
             f.write(f"{k}: {round(v/node_sum * 100, 1)}\n")
 
 
-iters = 10000
+iters = 100_000
 
 game_sum = 0
 for _ in tqdm(range(iters)):
@@ -51,9 +51,3 @@ for _ in tqdm(range(iters)):
     reward = random_vs_random(game_logger)
     game_sum += reward
 print("Average reward for random v random:", game_sum / iters)
-
-
-
-
-
-
