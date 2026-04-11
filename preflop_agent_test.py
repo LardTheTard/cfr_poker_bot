@@ -7,7 +7,7 @@ import pickle
 import os
 
 # NAME = input("Input path to desired nodeset: ")
-PATH = r'C:\Users\ZhaoLo\poker\cfr_poker_bot\nodesets\some_unexplored_200k.pkl'
+PATH = r'C:\Users\login\RANDOM_CODE\wpt_bot\nodesets\nodes_2026-04-11_02-57-31.pkl'
 
 now = datetime.now()
 timestamp = now.strftime("%Y-%m-%d_%H-%M-%S")
@@ -38,16 +38,16 @@ for bucket, node in nodes.items():
             f.write(f"{k}: {round(v/node_sum * 100, 1)}\n")
 
 
-iters = 100_000
+# iters = 100_000
 
-game_sum = 0
-for _ in tqdm(range(iters)):
-    reward = agent_vs_random(nodes, 1, game_logger)
-    game_sum += reward
-print("Average reward for agent v random:", game_sum / iters)
+# game_sum = 0
+# for _ in tqdm(range(iters)):
+#     reward = agent_vs_random(nodes, 1, game_logger)
+#     game_sum += reward
+# print("Average reward for agent v random:", game_sum / iters)
 
-game_sum = 0
-for _ in tqdm(range(iters)):
-    reward = random_vs_random(game_logger)
-    game_sum += reward
-print("Average reward for random v random:", game_sum / iters)
+# game_sum = 0
+# for _ in tqdm(range(iters)):
+#     reward = random_vs_random(game_logger)
+#     game_sum += reward
+# print("Average reward for random v random:", game_sum / iters)
