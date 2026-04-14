@@ -1,20 +1,29 @@
 import random
 import os
 import pickle
+import warnings
 from datetime import datetime
 from tqdm import tqdm
-from copy import deepcopy
-from pokerkit import Automation, Mode, NoLimitTexasHoldem, State, StandardHighHand
+from pokerkit import Automation, Mode, NoLimitTexasHoldem, State
 from collections import defaultdict
 from logger import Logger
 from bucketer import Bucketer
+from multiprocessing import Pool
+
+# analytics imports
+import cProfile
+import pstats
 
 # sys.setrecursionlimit(10000)
 
-bucketer = Bucketer()
+warnings.filterwarnings(
+    "ignore",
+    message="There is no reason for this player to fold.",
+    category=UserWarning,
+)
 
 def is_terminal(state: State) -> bool:
-    return state.actor_index is None or state.street_index > 0#Stop simulating after pre-flop
+    return state.actor_index is None or state.street_index > 0
 
 def payoff_p0(state: State):
     while state.actor_index is not None: #Stop simulating after pre-flop so just check thru
@@ -50,9 +59,7 @@ class Node:
 
 # ── External sampling MCCFR ────────────────────────────────────────────────────
 
-nodes = {}
-
-def mccfr(state: State, traverser: int, pf_history: list[str]):
+def mccfr(state: State, traverser: int, pf_history: list[str], nodes: dict, bucketer: Bucketer):
     """     
     """
 
@@ -71,14 +78,13 @@ def mccfr(state: State, traverser: int, pf_history: list[str]):
 
     if cur_actor == traverser:
         # ── Traversing player: explore every action ──────────────────────────
-
         node.times_visited += 1
 
         utils = {}
 
         cant_raise = False
         for action in actions:
-            next_state = deepcopy(state)
+            next_state = pickle.loads(pickle.dumps(state))
             next_pf_history = pf_history.copy()
             match action:
                 case 'fold':
@@ -95,7 +101,7 @@ def mccfr(state: State, traverser: int, pf_history: list[str]):
                     else:
                         cant_raise = True
             if not cant_raise:
-                utils[action] = mccfr(next_state, traverser, next_pf_history) 
+                utils[action] = mccfr(next_state, traverser, next_pf_history, nodes, bucketer) 
 
         if cant_raise:
             actions = ['fold', 'check/call']
@@ -107,7 +113,9 @@ def mccfr(state: State, traverser: int, pf_history: list[str]):
         node_util = sum(strat[action] * utils[action] for action in actions)
         
         for action in actions:
-            node.regret_sum[action] = max(node.regret_sum[action] + utils[action] - node_util, 0)
+            node.regret_sum[action] += utils[action] - node_util
+            # CHANGE FROM CFR+ to CFR due to problems with parallel merging biasing convergence
+            # node.regret_sum[action] = max(node.regret_sum[action] + utils[action] - node_util, 0)
 
         # debug_logger.log(bucket)
         # debug_logger.log(f'utils: {utils}')
@@ -119,8 +127,8 @@ def mccfr(state: State, traverser: int, pf_history: list[str]):
 
     else:
         # ── Opponent: SAMPLE a single action ─────────────────────────────────
-        next_state = deepcopy(state)
-        next_pf_history = pf_history.copy()
+        next_state = pickle.loads(pickle.dumps(state))
+        next_pf_history = pf_history.copy()   # ← snapshot all streets
         amount = get_rand_raise_size(state, bucket)
         if not next_state.can_complete_bet_or_raise_to(amount):
             actions = ['fold', 'check/call']
@@ -142,7 +150,7 @@ def mccfr(state: State, traverser: int, pf_history: list[str]):
         # debug_logger.log(f"(OPPONENT) regretsum: {node.regret_sum}")
         # debug_logger.log('------------------------')
 
-        return mccfr(next_state, traverser, next_pf_history)
+        return mccfr(next_state, traverser, next_pf_history, nodes, bucketer)
 
 # -- Helper functions -------------------------------
 
@@ -168,19 +176,59 @@ def get_rand_raise_size(state: State, bucket: tuple) -> float:
         amount = all_in_amt if all_in_amt >= min_bet else None
     return amount
 
+# -- Multiprocessing / Worker Managers -------------------------------------------------------
+
+def run_chunk(args):
+    chunk_size, seed, master_nodes = args
+    random.seed(seed)
+    local_nodes = master_nodes.copy()
+    initial_nodes = master_nodes      # already a deserialized copy — safe to keep
+    local_bucketer = Bucketer()
+    for count in range(chunk_size):
+        state = create_state()
+        play_hand(state, traverser=count % 2, nodes=local_nodes, bucketer=local_bucketer)
+    return local_nodes, initial_nodes  # return both
+
+def merge_nodes(master: dict, local: dict, initial: dict):
+    for key, local_node in local.items():
+        if key not in master:
+            master[key] = Node()
+        m = master[key]
+        init = initial.get(key)
+        for action, value in local_node.regret_sum.items():
+            m.regret_sum[action] += value - (init.regret_sum[action] if init else 0)
+        for action, value in local_node.strategy_sum.items():
+            m.strategy_sum[action] += value - (init.strategy_sum[action] if init else 0)
+        m.times_visited += local_node.times_visited - (init.times_visited if init else 0)
+
 # ── Training loop ──────────────────────────────────────────────────────────────
 
-def train(iters=100_000):
-    """Two traversals per iteration (alternate which player is traverser)."""
-    for count in tqdm(range(iters)):
-        v0_state = create_state()
-        v0 = play_hand(v0_state, traverser=count % 2)
+def train(iters=100_000, n_workers=None, merge_every=100):
+    if n_workers is None:
+        n_workers = os.cpu_count()
+    
+    nodes = {}
+    total_chunks = iters // merge_every  # total number of individual worker tasks
+    print(f"Using {n_workers} workers, chunk size {merge_every} iterations each")
+
+    with Pool(n_workers) as pool:
+        args = [(merge_every, random.randint(0, 2**32), nodes) for _ in range(total_chunks)]
+        
+        with tqdm(total=total_chunks, desc="Chunks", unit="chunk") as pbar:
+            for local_nodes, initial_nodes in pool.imap_unordered(run_chunk, args):
+                merge_nodes(nodes, local_nodes, initial_nodes)
+                pbar.update(1)
+                pbar.set_postfix(nodes=len(nodes))  # shows how many info-sets discovered
+
+                with open(f'nodesets/fullgame_1m.pkl', 'wb') as f:
+                    pickle.dump(nodes, f)
 
     print(f"\nTraining complete ({iters:,} iterations)")
+    return nodes
 
-def play_hand(state, traverser):
+def play_hand(state, traverser, nodes, bucketer):
     pf_history = list()
-    return mccfr(state, traverser, pf_history)
+    return mccfr(state, traverser, pf_history, nodes, bucketer)
     
 def create_state() -> State:
     state = NoLimitTexasHoldem.create_state(
@@ -219,8 +267,12 @@ if __name__ == '__main__':
     logger = Logger(output_path=f"logs/{timestamp}.txt")
     debug_logger = Logger(output_path=f"debug_logs/{timestamp}.txt")
 
-    random.seed() 
-    train(5_000_000)
+    # cProfile.run('train(100)', 'profile_output')
+
+    # stats = pstats.Stats('profile_output')
+    # stats.sort_stats('cumulative')
+    # stats.print_stats(20)  # top 20 slowest functions
+    nodes = train(200_000, merge_every=100)
 
     now = datetime.now()
     timestamp = now.strftime("%Y-%m-%d_%H-%M-%S")

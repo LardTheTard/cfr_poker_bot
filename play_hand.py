@@ -239,7 +239,7 @@ def agent_vs_random(agent: dict, agent_pos: int, logger: Logger) -> State:
     while state.actor_index is not None:
         match state.street_index:
             case 0: # IF PREFLOP: 
-                bucket = bucketer.preflop_bucket(state, pf_history)
+                bucket = bucketer.exact_preflop_bucket(state, pf_history)
                 logger.log(state.hole_cards[state.actor_index])
                 logger.log(bucket)
             case _: # STOPS AFTER PREFLOP
@@ -252,15 +252,18 @@ def agent_vs_random(agent: dict, agent_pos: int, logger: Logger) -> State:
             last_street = state.street_index
 
         if state.actor_index == agent_pos:
-            node = agent[bucket]
-            node_sum = sum(node.strategy_sum.values())
-            actions = list(node.strategy_sum.keys())
-            probs = [node.strategy_sum[action] / node_sum for action in actions]
+            try:
+                node = agent[bucket]
+                node_sum = sum(node.strategy_sum.values())
+                actions = list(node.strategy_sum.keys())
+                probs = [node.strategy_sum[action] / node_sum for action in actions]
+            except KeyError:
+                actions = list()
             if actions: #Sometimes the node has not been explored by the agent yet (or only by agent opponent which doesn't update the regretsum) meaning the actions haven't been updated/created
                 action_name = random.choices(actions, weights=probs)[0]
             else:
                 action_name = 'check/call'
-                print("Node only explored by opponent, has no weights.")
+                # print("Node only explored by opponent, has no weights.")
             if action_name == 'raise':
                 amount = max(state.bets) + state.total_pot_amount * 1/2 
                 if 'vs_4bet' in bucket or amount > state.stacks[state.actor_index]:

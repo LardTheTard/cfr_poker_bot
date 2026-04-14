@@ -1,4 +1,4 @@
-from preflop_mccfr import Node
+from exact_preflop_freqs import Node
 from logger import Logger
 from datetime import datetime
 from play_hand import agent_vs_random, random_vs_random, full_agent_vs_random
@@ -7,7 +7,7 @@ import pickle
 import os
 
 # NAME = input("Input path to desired nodeset: ")
-PATH = r'C:\Users\login\RANDOM_CODE\wpt_bot\nodesets\exact_preflop_2m.pkl'
+PATH = r'C:\Users\ZhaoLo\poker\cfr_poker_bot\nodesets\nodes_2026-04-14_11-55-18.pkl'
 
 now = datetime.now()
 timestamp = now.strftime("%Y-%m-%d_%H-%M-%S")
@@ -39,14 +39,13 @@ for bucket, node in nodes.items():
         for k, v in node.regret_sum.items():
             f.write(f"{k} regret: {round(v)}\n")
 
+iters = 10_000
 
-# iters = 50_000
-
-# game_sum = 0
-# for _ in tqdm(range(iters)):
-#     reward = full_agent_vs_random(nodes, 1, game_logger)
-#     game_sum += reward
-# print("Average reward for agent v random:", game_sum / iters)
+game_sum = 0
+for _ in tqdm(range(iters)):
+    reward = agent_vs_random(nodes, 1, game_logger)
+    game_sum += reward
+print("Average reward for agent v random:", game_sum / iters)
 
 # game_sum = 0
 # for _ in tqdm(range(iters)):
