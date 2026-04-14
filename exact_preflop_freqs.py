@@ -274,6 +274,12 @@ if __name__ == '__main__':
     # stats.print_stats(20)  # top 20 slowest functions
     nodes = train(200_000, merge_every=100)
 
+    for key, value in nodes.items():
+        node_sum = sum(value.strategy_sum.values())
+        if node_sum == 0:
+            for k, v in value.strategy_sum.items():
+                v = 1.0 / len(value.strategy_sum.items())
+
     now = datetime.now()
     timestamp = now.strftime("%Y-%m-%d_%H-%M-%S")
     with open(f'nodesets/nodes_{timestamp}.pkl', 'wb') as f:
