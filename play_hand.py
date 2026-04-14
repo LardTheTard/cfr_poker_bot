@@ -304,6 +304,129 @@ def agent_vs_random(agent: dict, agent_pos: int, logger: Logger) -> State:
 
     return state.stacks[agent_pos] - state.starting_stacks[agent_pos]
 
+def full_agent_vs_random(agent: dict, agent_pos: int, logger: Logger) -> State:
+    """
+    Simulate a hand where the agent plays against an opponent that plays randomly (20% fold, 40% call, 40% raise)
+    \nagent: dict\n
+    - The dictionary containing all the buckets and corresponding nodes that the agent plays from.
+    \nagent_pos: int\n
+    - What position the agent should start in, 0 for SB, 1 for BB.
+    """
+    state = NoLimitTexasHoldem.create_state(
+        (
+            Automation.ANTE_POSTING,
+            Automation.BET_COLLECTION,
+            Automation.BLIND_OR_STRADDLE_POSTING,
+            Automation.CARD_BURNING,
+            Automation.HOLE_DEALING,
+            Automation.BOARD_DEALING,
+            Automation.HOLE_CARDS_SHOWING_OR_MUCKING,
+            Automation.HAND_KILLING,
+            Automation.CHIPS_PUSHING,
+            Automation.CHIPS_PULLING,
+        ),
+        False,                 # ante trimming status
+        0,                     # antes
+        (1, 2),                # blinds
+        2,                     # min bet
+        (100, 100),            # starting stacks
+        2,                     # player count
+        mode=Mode.CASH_GAME,
+    )
+
+    bucketer = Bucketer()
+    pf_history = []
+    flop_history = []
+    turn_history = []
+    river_history = []
+
+    last_street = None
+
+    while state.actor_index is not None:
+        match state.street_index:
+            case 0: # IF PREFLOP: 
+                state.check_or_call()
+                # bucket = bucketer.preflop_bucket(state, pf_history)
+                # logger.log(state.hole_cards[state.actor_index])
+                # logger.log(bucket)
+            case 1: 
+                bucket = bucketer.flop_bucket(state, flop_history)
+                logger.log(state.hole_cards[state.actor_index])
+                logger.log(bucket)
+            case 2: 
+                bucket = bucketer.turn_bucket(state, turn_history, flop_history)
+                logger.log(state.hole_cards[state.actor_index])
+                logger.log(bucket)
+            case 3:
+                bucket = bucketer.river_bucket(state, river_history, turn_history)
+                logger.log(state.hole_cards[state.actor_index])
+                logger.log(bucket)
+
+        if state.street_index != last_street:
+            logger.log_street_state(state)
+            last_street = state.street_index
+
+        if state.actor_index == agent_pos:
+            try:
+                node = agent[bucket]
+                node_sum = sum(node.strategy_sum.values())
+                actions = list(node.strategy_sum.keys())
+                probs = [node.strategy_sum[action] / node_sum for action in actions]
+            except KeyError:
+                actions = ['fold', 'check/call', 'raise']
+                if bucket[0][0] in [6,7]:
+                    probs = [0, 0.4, 0.6]
+                elif bucket[0][0] in [3,4,5]:
+                    probs = [0.3, 0.4, 0.3]
+                else:
+                    probs = [0.6, 0.4, 0]
+            if len(actions) <= 2 or len(probs) <= 2:
+                action_name = 'check/call'
+            else:
+                action_name = random.choices(actions, weights=probs)[0]
+            if action_name == 'raise':
+                amount = max(state.bets) + state.total_pot_amount * 1/2 
+                if 'vs_4bet' in bucket or amount > state.stacks[state.actor_index]:
+                    all_in_amt = state.stacks[state.actor_index]
+                    min_bet = state.min_completion_betting_or_raising_to_amount
+                    if min_bet is None:
+                        min_bet = 0
+                    amount = all_in_amt if all_in_amt >= min_bet else None
+                if state.can_complete_bet_or_raise_to(amount):
+                    state.complete_bet_or_raise_to(amount)
+                else:  
+                    action_name = 'check/call'
+                    amount = 0 
+                    state.check_or_call()
+            elif action_name == 'check/call':
+                state.check_or_call()
+            elif action_name == 'fold':
+                state.fold()
+            else:
+                raise Exception
+        else:
+            action_name, amount = random_action(state)
+            
+        if action_name == 'raise':
+            logger.log(f"Player {'agent' if state.actor_index == agent_pos else 'random'}: raises to {amount}")
+        else:
+            logger.log(f"Player {'agent' if state.actor_index == agent_pos else 'random'}: {action_name}")
+
+        # Per street history recording
+        match state.street_index:
+            case 0:
+                pf_history.append(action_name)
+            case 1:
+                flop_history.append(action_name)
+            case 2:
+                turn_history.append(action_name)
+            case 3:
+                river_history.append(action_name)
+
+    logger.log_final(state)
+
+    return state.stacks[agent_pos] - state.starting_stacks[agent_pos]
+
 if __name__ == "__main__":
     logger = Logger(output_path="game_log.txt")
     logger.clear_logs() # clears logs so new hand can be logged

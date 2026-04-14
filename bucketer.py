@@ -1,5 +1,5 @@
 from pokerkit import State
-from card_bucketer import preflop_card_bucket, flop_card_bucket, turn_card_bucket, river_card_bucket
+from card_bucketer import exact_preflop_card_bucket, preflop_card_bucket, flop_card_bucket, turn_card_bucket, river_card_bucket
 
 class Bucketer:
     def __init__(self) -> None:
@@ -253,6 +253,86 @@ class Bucketer:
             size_bucket,
             spr_bucket,
             prev_street_raise_bucket
+        )
+
+    def exact_preflop_bucket(self, state: State, history: list) -> tuple:
+
+        actor = state.actor_index
+        
+        hand_bucket = exact_preflop_card_bucket(state)
+
+        # ---------- position bucket ----------
+        # Assumes heads-up: actor 0 = SB, actor 1 = BB
+        position_bucket = "SB" if actor == 0 else "BB"
+
+        # ---------- effective stack bucket ----------
+        # Assumes state.stacks exists and blinds are normalized to bb units,
+        # or at least consistent with 100bb+ interpretation.
+        eff_stack = min(state.stacks[0], state.stacks[1])
+
+        if eff_stack < 20:
+            stack_bucket = "short"
+        elif eff_stack < 50:
+            stack_bucket = "medium"
+        else:
+            stack_bucket = "deep"
+
+        # ---------- betting history bucket ----------
+        if not history:
+            history_bucket = "root"
+        elif len(history) == 1:
+            first = history[0]
+            if first == 'check/call':
+                history_bucket = "limped"
+            elif first == 'raise':
+                history_bucket = "open"
+            else:
+                history_bucket = "root"
+        elif len(history) == 2:
+            if (history[0] == 'raise') and (history[1] == 'raise'):
+                history_bucket = "vs_3bet"
+            else:
+                history_bucket = "vs_open"
+        elif len(history) == 3:
+            if (history[0] == 'raise') and (history[1] == 'raise') and (history[2] == 'raise'):
+                history_bucket = "vs_4bet"
+            else:
+                history_bucket = "vs_3bet"
+        else:
+            history_bucket = "vs_4bet"
+
+        # ---------- betting size bucket ----------
+        # Assumes there is some amount currently being faced.
+        # Best case: state.to_call and blind size available.
+        to_call = max(state.bets[0], state.bets[1]) - min(state.bets[0], state.bets[1])
+        bb = max(state.blinds_or_straddles)
+
+        # Size in big blinds
+        size_bb = to_call / bb if bb > 0 else to_call
+
+        if history_bucket == "limped":
+            size_bucket = "Limp"
+        elif size_bb <= 2.0 and to_call > 0:
+            size_bucket = "~2.0bb raise"
+        elif 2.0 < size_bb <= 2.75:
+            size_bucket = "~2.75bb raise"
+        elif 2.75 < size_bb < 6.0:
+            size_bucket = "~6.0bb raise"
+        elif 6.0 <= size_bb < 10.0:
+            size_bucket = "~10.0bb raise"
+        elif 10.0 <= size_bb < 25.0:
+            size_bucket = "~25.0bb raise"
+        elif size_bb >= 25.0:
+            size_bucket = "Jam (>25.00bb) raise"
+        else:
+            size_bucket = "Limp"
+
+        return (
+            hand_bucket,
+            position_bucket,
+            stack_bucket,
+            history_bucket,
+            size_bucket,
         )
 
 """
