@@ -38,6 +38,13 @@ class Node:
         self.strategy_sum = defaultdict(float)
         self.times_visited = 0
 
+    def clone(self):
+        new = Node()
+        new.regret_sum.update(self.regret_sum)
+        new.strategy_sum.update(self.strategy_sum)
+        new.times_visited = self.times_visited
+        return new
+
     def get_strategy(self, actions):
         """Regret-matching (no reach weighting needed for external sampling)."""
         pos = sum(max(self.regret_sum[a], 0.0) for a in actions)
@@ -59,100 +66,101 @@ class Node:
 
 # ── External sampling MCCFR ────────────────────────────────────────────────────
 
-def mccfr(state: State, traverser: int, pf_history: list[str], nodes: dict, bucketer: Bucketer):
-    """     
-    """
-
+def mccfr(state: State, traverser: int, pf_history: list[str], base_nodes: dict, delta_nodes: dict, bucketer: Bucketer):
     if is_terminal(state):
         payoff = payoff_p0(state)
         return payoff if traverser == 0 else -payoff
 
     bucket = bucketer.exact_preflop_bucket(state, pf_history)
+    cur_actor = state.actor_index
+    actions = ['fold', 'check/call', 'raise']
 
-    cur_actor       = state.actor_index
-    actions = ['fold', 'check/call', 'raise'] # IMPLEMENT DIFFERENT RAISE SIZES: 'min_click', 'raise_medium', 'raise_big'
+    base_node = base_nodes.get(bucket)
 
-    if bucket not in nodes:
-        nodes[bucket] = Node()
-    node  = nodes[bucket]
+    if bucket not in delta_nodes:
+        delta_nodes[bucket] = Node()
+    delta_node = delta_nodes[bucket]
+
+    def current_regret(action):
+        base_val = base_node.regret_sum[action] if base_node else 0.0
+        delta_val = delta_node.regret_sum[action]
+        return base_val + delta_val
+
+    def get_current_strategy(actions):
+        pos = sum(max(current_regret(a), 0.0) for a in actions)
+        if pos > 0:
+            return {a: max(current_regret(a), 0.0) / pos for a in actions}
+        return {a: 1.0 / len(actions) for a in actions}
 
     if cur_actor == traverser:
-        # ── Traversing player: explore every action ──────────────────────────
-        node.times_visited += 1
-
+        delta_node.times_visited += 1
         utils = {}
+        legal_actions = []
 
-        cant_raise = False
         for action in actions:
             next_state = pickle.loads(pickle.dumps(state))
             next_pf_history = pf_history.copy()
-            match action:
-                case 'fold':
-                    next_state.fold()
-                    next_pf_history.append('fold')
-                case 'check/call':
-                    next_state.check_or_call()
-                    next_pf_history.append('check/call')
-                case 'raise':
-                    amount = get_rand_raise_size(state, bucket)
-                    if next_state.can_complete_bet_or_raise_to(amount):
-                        next_state.complete_bet_or_raise_to(amount)
-                        next_pf_history.append('raise')
-                    else:
-                        cant_raise = True
-            if not cant_raise:
-                utils[action] = mccfr(next_state, traverser, next_pf_history, nodes, bucketer) 
 
-        if cant_raise:
-            actions = ['fold', 'check/call']
+            if action == 'fold':
+                next_state.fold()
+                next_pf_history.append('fold')
+                legal_actions.append(action)
+                utils[action] = mccfr(next_state, traverser, next_pf_history, base_nodes, delta_nodes, bucketer)
 
-        strat = node.get_strategy(actions)
+            elif action == 'check/call':
+                next_state.check_or_call()
+                next_pf_history.append('check/call')
+                legal_actions.append(action)
+                utils[action] = mccfr(next_state, traverser, next_pf_history, base_nodes, delta_nodes, bucketer)
 
-        node.accumulate_strategy(strat, actions)   # track average strategy
+            elif action == 'raise':
+                amount = get_rand_raise_size(state, bucket)
+                if next_state.can_complete_bet_or_raise_to(amount):
+                    next_state.complete_bet_or_raise_to(amount)
+                    next_pf_history.append('raise')
+                    legal_actions.append(action)
+                    utils[action] = mccfr(next_state, traverser, next_pf_history, base_nodes, delta_nodes, bucketer)
 
-        node_util = sum(strat[action] * utils[action] for action in actions)
-        
+        actions = legal_actions
+        strat = get_current_strategy(actions)
+
         for action in actions:
-            node.regret_sum[action] += utils[action] - node_util
-            # CHANGE FROM CFR+ to CFR due to problems with parallel merging biasing convergence
-            # node.regret_sum[action] = max(node.regret_sum[action] + utils[action] - node_util, 0)
+            delta_node.strategy_sum[action] += strat[action]
 
-        # debug_logger.log(bucket)
-        # debug_logger.log(f'utils: {utils}')
-        # debug_logger.log(f'times_visited: {node.times_visited}')
-        # debug_logger.log(f"regretsum: {node.regret_sum}")
-        # debug_logger.log('------------------------')
+        node_util = sum(strat[a] * utils[a] for a in actions)
+
+        for action in actions:
+            delta_node.regret_sum[action] += utils[action] - node_util
 
         return node_util
 
     else:
-        # ── Opponent: SAMPLE a single action ─────────────────────────────────
         next_state = pickle.loads(pickle.dumps(state))
-        next_pf_history = pf_history.copy()   # ← snapshot all streets
+        next_pf_history = pf_history.copy()
+
         amount = get_rand_raise_size(state, bucket)
         if not next_state.can_complete_bet_or_raise_to(amount):
             actions = ['fold', 'check/call']
-        strat = node.get_strategy(actions)
-        probs = [strat[action] for action in actions]
-        sampled_action = random.choices(actions, weights=probs)[0]
-        if actions.index(sampled_action) == 0:
+
+        strat = get_current_strategy(actions)
+        sampled_action = random.choices(actions, weights=[strat[a] for a in actions])[0]
+
+        if sampled_action == 'fold':
             next_state.fold()
             next_pf_history.append('fold')
-        elif actions.index(sampled_action) == 1: 
+        elif sampled_action == 'check/call':
             next_state.check_or_call()
             next_pf_history.append('check/call')
-        elif actions.index(sampled_action) >= 2:
+        else:
             next_state.complete_bet_or_raise_to(amount)
             next_pf_history.append('raise')
 
-        # debug_logger.log(bucket) 
-        # debug_logger.log(f'(OPPONENT) times_visited: {node.times_visited}')
-        # debug_logger.log(f"(OPPONENT) regretsum: {node.regret_sum}")
-        # debug_logger.log('------------------------')
-
-        return mccfr(next_state, traverser, next_pf_history, nodes, bucketer)
+        return mccfr(next_state, traverser, next_pf_history, base_nodes, delta_nodes, bucketer)
 
 # -- Helper functions -------------------------------
+
+def clone_nodes(nodes: dict) -> dict:
+    return {k: v.clone() for k, v in nodes.items()}
 
 def get_halfp_raise_size(state: State, bucket: tuple) -> float:
     amount = max(state.bets) + state.total_pot_amount * 1/2 #Raises half pot by default
@@ -181,54 +189,77 @@ def get_rand_raise_size(state: State, bucket: tuple) -> float:
 def run_chunk(args):
     chunk_size, seed, master_nodes = args
     random.seed(seed)
-    local_nodes = master_nodes.copy()
-    initial_nodes = master_nodes      # already a deserialized copy — safe to keep
+
+    base_nodes = master_nodes
+    delta_nodes = {}
     local_bucketer = Bucketer()
+
     for count in range(chunk_size):
         state = create_state()
-        play_hand(state, traverser=count % 2, nodes=local_nodes, bucketer=local_bucketer)
-    return local_nodes, initial_nodes  # return both
+        play_hand(
+            state,
+            traverser=count % 2,
+            base_nodes=base_nodes,
+            delta_nodes=delta_nodes,
+            bucketer=local_bucketer,
+        )
 
-def merge_nodes(master: dict, local: dict, initial: dict):
-    for key, local_node in local.items():
+    return delta_nodes
+
+def merge_nodes(master: dict, delta: dict):
+    for key, delta_node in delta.items():
         if key not in master:
             master[key] = Node()
+
         m = master[key]
-        init = initial.get(key)
-        for action, value in local_node.regret_sum.items():
-            m.regret_sum[action] += value - (init.regret_sum[action] if init else 0)
-        for action, value in local_node.strategy_sum.items():
-            m.strategy_sum[action] += value - (init.strategy_sum[action] if init else 0)
-        m.times_visited += local_node.times_visited - (init.times_visited if init else 0)
+
+        for action, value in delta_node.regret_sum.items():
+            m.regret_sum[action] += value
+
+        for action, value in delta_node.strategy_sum.items():
+            m.strategy_sum[action] += value
+
+        m.times_visited += delta_node.times_visited
 
 # ── Training loop ──────────────────────────────────────────────────────────────
 
-def train(iters=100_000, n_workers=None, merge_every=100):
+def train(iters=100_000, n_workers=None, merge_every=1000):
     if n_workers is None:
         n_workers = os.cpu_count()
-    
+
     nodes = {}
-    total_chunks = iters // merge_every  # total number of individual worker tasks
+    total_chunks = iters // merge_every
     print(f"Using {n_workers} workers, chunk size {merge_every} iterations each")
 
     with Pool(n_workers) as pool:
-        args = [(merge_every, random.randint(0, 2**32), nodes) for _ in range(total_chunks)]
-        
         with tqdm(total=total_chunks, desc="Chunks", unit="chunk") as pbar:
-            for local_nodes, initial_nodes in pool.imap_unordered(run_chunk, args):
-                merge_nodes(nodes, local_nodes, initial_nodes)
-                pbar.update(1)
-                pbar.set_postfix(nodes=len(nodes))  # shows how many info-sets discovered
+            chunks_done = 0
 
-                with open(f'nodesets/fullgame_1m.pkl', 'wb') as f:
+            while chunks_done < total_chunks:
+                batch = min(n_workers, total_chunks - chunks_done)
+                args = [
+                    (merge_every, random.randint(0, 2**32), nodes)
+                    for _ in range(batch)
+                ]
+
+                results = pool.map(run_chunk, args)
+
+                for delta_nodes in results:
+                    merge_nodes(nodes, delta_nodes)
+                    pbar.update(1)
+                    pbar.set_postfix(nodes=len(nodes))
+
+                chunks_done += batch
+
+                with open('nodesets/exact_pf_1m.pkl', 'wb') as f:
                     pickle.dump(nodes, f)
 
     print(f"\nTraining complete ({iters:,} iterations)")
     return nodes
 
-def play_hand(state, traverser, nodes, bucketer):
-    pf_history = list()
-    return mccfr(state, traverser, pf_history, nodes, bucketer)
+def play_hand(state, traverser, base_nodes, delta_nodes, bucketer):
+    pf_history = []
+    return mccfr(state, traverser, pf_history, base_nodes, delta_nodes, bucketer)
     
 def create_state() -> State:
     state = NoLimitTexasHoldem.create_state(
@@ -272,13 +303,7 @@ if __name__ == '__main__':
     # stats = pstats.Stats('profile_output')
     # stats.sort_stats('cumulative')
     # stats.print_stats(20)  # top 20 slowest functions
-    nodes = train(200_000, merge_every=100)
-
-    for key, value in nodes.items():
-        node_sum = sum(value.strategy_sum.values())
-        if node_sum == 0:
-            for k, v in value.strategy_sum.items():
-                v = 1.0 / len(value.strategy_sum.items())
+    nodes = train(5_000_000, merge_every=1000)
 
     now = datetime.now()
     timestamp = now.strftime("%Y-%m-%d_%H-%M-%S")

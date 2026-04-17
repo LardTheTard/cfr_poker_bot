@@ -1,96 +1,151 @@
 import plotly.graph_objects as go
-import numpy as np
 import pickle
+
+from pokerkit import Hand
 from exact_preflop_freqs import Node
 
-PATH = r'C:\Users\ZhaoLo\poker\cfr_poker_bot\nodesets\exact_preflop_1m.pkl'
+PATH = r'C:\Users\login\RANDOM_CODE\wpt_bot\nodesets\exact_pf_500k.pkl'
 RANKS = "AKQJT98765432"
 rank_to_idx = {r: i for i, r in enumerate(RANKS)}
 
-hands = dict()
+hands = {}
 
 with open(PATH, "rb") as f:
     nodes = pickle.load(f)
 
 for bucket, node in nodes.items():
-    node_sum = sum(node.strategy_sum.values())
-    for k, v in node.strategy_sum.items():
-        try:
-            hands[bucket[0]] = {k: round(v/node_sum * 100, 1)}
-        except ZeroDivisionError:
-            pass
-    
+    if bucket[3] == 'root':
+        hand = bucket[0]
+        node_sum = sum(node.strategy_sum.values())
 
-# hands = {
-#     "JQo": {"raise": 0.55, "check/call": 0.30, "fold": 0.15},
-#     "3Ts": {"raise": 0.10, "check/call": 0.60, "fold": 0.30},
-#     "AKs": {"raise": 0.80, "check/call": 0.15, "fold": 0.05},
-#     "55":  {"raise": 0.40, "check/call": 0.50, "fold": 0.10},
-# }
+        if node_sum <= 0:
+            continue
+
+        hands[hand] = {
+            "raise": node.strategy_sum.get("raise", 0) / node_sum,
+            "check/call": node.strategy_sum.get("check/call", 0) / node_sum,
+            "fold": node.strategy_sum.get("fold", 0) / node_sum,
+        }
 
 def parse_hand(hand):
     """
-    Returns (row, col) indices for a 13x13 poker grid
+    Returns (row, col) indices for a 13x13 poker grid.
+    Pairs go on diagonal.
+    Suited go above diagonal.
+    Offsuit go below diagonal.
     """
     r1, r2 = hand[0], hand[1]
     i, j = rank_to_idx[r1], rank_to_idx[r2]
 
-    if hand[0] == hand[1]:  # pocket pair
+    if r1 == r2:
         return i, i
     elif hand[2] == "s":
         return min(i, j), max(i, j)
     else:
         return max(i, j), min(i, j)
-    
-Z = np.full((13, 13), np.nan)
-hover_text = [["" for _ in range(13)] for _ in range(13)]
 
+# Colors for each action
+ACTION_COLORS = {
+    "raise": "#d62728",       # red
+    "check/call": "#2ca02c",  # green
+    "fold": "#1f77b4",        # blue
+}
+
+fig = go.Figure()
+
+# Keep axes in a 13x13 grid
+fig.update_xaxes(
+    range=[0, 13],
+    tickmode="array",
+    tickvals=[i + 0.5 for i in range(13)],
+    ticktext=list(RANKS),
+    side="top",
+    showgrid=False,
+    zeroline=False,
+)
+
+fig.update_yaxes(
+    range=[13, 0],  # reversed
+    tickmode="array",
+    tickvals=[i + 0.5 for i in range(13)],
+    ticktext=list(RANKS),
+    showgrid=False,
+    zeroline=False,
+    scaleanchor="x",
+    scaleratio=1,
+)
+
+# Add cell backgrounds / borders
+for i in range(13):
+    for j in range(13):
+        fig.add_shape(
+            type="rect",
+            x0=j, x1=j + 1,
+            y0=i, y1=i + 1,
+            line=dict(color="black", width=1),
+            fillcolor="white",
+            layer="below",
+        )
+
+# Add action-frequency rectangles inside each cell
 for hand, freqs in hands.items():
     try:
         r, c = parse_hand(hand)
-        Z[r, c] = freqs["raise"]
 
-        hover_text[r][c] = (
-            f"<b>{hand}</b><br>"
-            f"Raise: {freqs['raise']:.0%}<br>"
-            f"Call: {freqs['check/call']:.0%}<br>"
-            f"Fold: {freqs['fold']:.0%}"
-        )
-    except KeyError:
-        pass
+        x0, x1 = c, c + 1
+        y0, y1 = r, r + 1
 
-fig = go.Figure(
-    data=go.Heatmap(
-        z=Z,
-        x=list(RANKS),
-        y=list(RANKS),
-        text=hover_text,
-        hoverinfo="text",
-        zmin=0,
-        zmax=1,
-        colorscale=[
-            [0.0, "rgb(245,245,245)"],
-            [0.25, "rgb(255,200,200)"],
-            [0.50, "rgb(255,140,140)"],
-            [0.75, "rgb(220,60,60)"],
-            [1.0, "rgb(150,0,0)"],
-        ],
-        colorbar=dict(title="Raise Frequency"),
-    )
-)
+        # stack actions vertically inside the cell
+        # top: raise, middle: call, bottom: fold
+        parts = [
+            ("raise", freqs.get("raise", 0)),
+            ("check/call", freqs.get("check/call", 0)),
+            ("fold", freqs.get("fold", 0)),
+        ]
+
+        current_y = y0
+        for action, frac in parts:
+            if frac <= 0:
+                continue
+
+            height = frac
+            fig.add_shape(
+                type="rect",
+                x0=x0,
+                x1=x1,
+                y0=current_y,
+                y1=current_y + height,
+                line=dict(width=0),
+                fillcolor=ACTION_COLORS[action],
+            )
+            current_y += height
+
+        # Add hover + label
+        fig.add_trace(go.Scatter(
+            x=[c + 0.5],
+            y=[r + 0.5],
+            mode="text",
+            text=[hand],
+            textfont=dict(color="black", size=12),
+            hovertemplate=(
+                f"<b>{hand}</b><br>"
+                f"Raise: {freqs.get('raise', 0):.1%}<br>"
+                f"Call: {freqs.get('check/call', 0):.1%}<br>"
+                f"Fold: {freqs.get('fold', 0):.1%}"
+                "<extra></extra>"
+            ),
+            showlegend=False,
+        ))
+
+    except Exception as e:
+        print(f"Skipping hand {hand}: {e}")
+
 fig.update_layout(
-    title="Poker Hand Raise Frequencies",
-    width=750,
-    height=750,
-    xaxis=dict(
-        side="top",
-        tickangle=0,
-        showgrid=False,
-    ),
-    yaxis=dict(
-        autorange="reversed",
-        showgrid=False,
-    ),
+    title="Poker Hand Frequencies",
+    width=800,
+    height=800,
+    plot_bgcolor="white",
+    margin=dict(l=40, r=40, t=60, b=40),
 )
 
 fig.show()
